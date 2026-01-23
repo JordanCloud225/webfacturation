@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Typeservice{% endblock %}
+
+{% block body %}
+    <div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <h1>Modification Type Service</h1>
+        </div>
+    </div>
+
+
+    {{ include('typeservice/_form.html.twig', {'button_label': 'Update'}) }}
+
+</div>
+{% endblock %}

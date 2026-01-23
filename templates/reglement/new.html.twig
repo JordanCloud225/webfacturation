@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Reglement{% endblock %}
+
+{% block body %}
+    <h1>Create new Reglement</h1>
+
+    {{ include('reglement/_form.html.twig') }}
+
+    <a href="{{ path('app_reglement_index') }}">back to list</a>
+{% endblock %}
+

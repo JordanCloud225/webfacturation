@@ -1,0 +1,89 @@
+{% extends 'accueil/index.html.twig' %}
+
+{% block title %}Edit Entreprise{% endblock %}
+
+{% block body %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Gestion Entreprise</h3>
+        </div>
+        <div class="card card-primary">
+
+            <div class="card card-body">
+                {{ form_start(form) }}
+                <div class="my-custom-class-for-errors">
+                    {{ form_errors(form) }}
+                    {% for message in app.flashes('message') %}
+                        <div class="primary">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+             	<div class="row">
+
+														<div class="col-md-4">
+															{{ form_row(form.libelle, {'label':'Structure * ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.siren, {'label':'Banque','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.codenaf, {'label':'RCCM','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.numtva, {'label':'N° TVA ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.adresse, {'label':'Adresse* ','attr':{'class':'form-control'}}) }}
+														</div>	<div class="col-md-4">
+															{{ form_row(form.competance, {'label':'Activités principales ','attr':{'class':'form-control'}}) }}
+														</div>
+
+														<div class="col-md-4">
+															{{ form_row(form.ville, {'label':'Siège ','attr':{'class':'form-control'}}) }}
+														</div>
+
+														<div class="col-md-4">
+															{{ form_row(form.pays, {'label':'Pays * ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.contact1, {'label':'Contact entreprise* ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.contact2, {'label':'Contact entreprise 2 ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.codepostal, {'label':'Code postal ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.langue, {'label':'Langue *  ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.siteweb, {'label':'Site Internet ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.email1, {'label':'Email entreprise ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.complementadresse, {'label':'Complement adresse ','attr':{'class':'form-control'}}) }}
+														</div>
+															<div class="col-md-4">
+															{{ form_row(form.sigle, {'label':'Abreviation ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+														{{ form_row(form.brochure2, {'label':'Logo  ','attr':{'class':'form-control'}}) }}
+													</div>
+
+                <hr style="visibility: hidden" />
+                <div class="row"> 
+                    <div class="col-md-2"> <button class="btn btn-primary">Modifier</button>        </div>
+                    <div class="col-md-3"><a href="{{ path('app_entreprise_index') }}" class="btn btn-success">Afficher la liste</a> </div>
+                </div> 
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

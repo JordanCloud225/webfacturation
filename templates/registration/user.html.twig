@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Gestion des Utilisateurs</h3>
+        </div>
+        {% for message in app.flashes('message') %}
+            <div class="primary">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+ 
+
+        <div class="card-body">
+
+            <a href="{{ path('app_user_new') }}">Nouveau</a>
+
+            </a> 
+
+            <hr style="visibility: hidden" />
+     <table id="myTable" class="table table-sm table-bordered table-striped table-hover display" style="width:100%">
+        <thead class="bg-primary text-white text-bold">
+        
+                    <tr>
+
+                        <th>Nom</th>
+                        <th>Photo</th>
+                        <th>Etat</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr >
+
+                            <td>{{ user.nom }}</td>
+                            <td>
+                                {% if user.brochureFilename is not empty %}
+                               
+                           <a href="{{ path('app_user_edit', {'id': user.id}) }}">
+                             <img src="{{ asset('uploads/brochures/'~user.brochureFilename )}}"  alt="logo"  style="width: 100px;"/> </a>
+
+                               
+
+                             
+                                {% else %}  
+                               <a href="{{ path('app_user_edit', {'id': user.id}) }}">  <i class="fa fa-edit" title="Modifier ce compte"></i></a>
+                          {% endif %}
+
+                            </td> 
+                            
+                            <td>
+                                {% if user.etat == 1  %} <label class="btn btn-success"> Actif</label> {% else %} <label class="btn btn-danger"> Inactif</label>  {% endif %}
+
+                            </td>
+
+
+                            <td>
+                              {% if user.etat == 1 %}
+                                            <form method="post" action="{{ path('app_registration_delete', {'id': user.id}) }}" onsubmit="return confirm('Voulez-vous fermer ce compte?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+
+                                                  <button class="delete btn btn-sm btn-danger">
+                                                      <i class="fa fa-trash" title="Fermer ce compte"></i>
+                                                  </button>
+                                            </form>
+
+                                        {% else %}
+
+
+
+
+                                            <form method="post" action="{{ path('app_registration_active', {'id': user.id}) }}" onsubmit="return confirm('Voulez-vous activer ce compte?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('active' ~ user.id) }}">
+
+                                               <button class="delete btn btn-sm btn-primary">
+                                                      <i class="fa fa-edit" title="Fermer ce compte"></i>
+                                                  </button>
+                                            </form>
+                                        {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+      <script type="text/javascript">
+
+                 $(document).ready(function () {
+ 
+                    $('#myTable').DataTable({
+                      
+                            language: {    url: '{{ asset("DataTables/fr-FR.json") }}', },
+                            destroy: true,
+                            dom: 'B<"clear">lfrtip',
+                            buttons: ['copy','excel', 'pdf','colvis']
+                        });
+                    });
+   
+
+                </script>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boncommandefour{% endblock %}
+
+{% block body %}
+    <h1>Boncommandefour</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ boncommandefour.id }}</td>
+            </tr>
+            <tr>
+                <th>Brochure</th>
+                <td>{{ boncommandefour.brochure }}</td>
+            </tr>
+            <tr>
+                <th>Datebdc</th>
+                <td>{{ boncommandefour.datebdc ? boncommandefour.datebdc|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_boncommandefour_index') }}">back to list</a>
+
+    <a href="{{ path('app_boncommandefour_edit', {'id': boncommandefour.id}) }}">edit</a>
+
+    {{ include('boncommandefour/_delete_form.html.twig') }}
+{% endblock %}

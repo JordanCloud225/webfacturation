@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Depense{% endblock %}
+
+{% block body %}
+    <h1>Depense</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ depense.id }}</td>
+            </tr>
+            <tr>
+                <th>Datedepense</th>
+                <td>{{ depense.datedepense ? depense.datedepense|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ depense.montant }}</td>
+            </tr>
+            <tr>
+                <th>Detail</th>
+                <td>{{ depense.detail }}</td>
+            </tr>
+            <tr>
+                <th>BrochureFilename</th>
+                <td>{{ depense.brochureFilename }}</td>
+            </tr>
+            <tr>
+                <th>Identreprise</th>
+                <td>{{ depense.identreprise }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ depense.createdAt ? depense.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ depense.updatedAt ? depense.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ depense.deletedAt ? depense.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ depense.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ depense.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>DeletedBy</th>
+                <td>{{ depense.deletedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_depense_index') }}">back to list</a>
+
+    <a href="{{ path('app_depense_edit', {'id': depense.id}) }}">edit</a>
+
+    {{ include('depense/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,277 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demandes d'achat
+{% endblock %}
+
+{% block body %}
+	{% for label, messages in app.flashes(['success', 'warning']) %}
+		{% for message in messages %}
+			<div class="alert alert-success">
+				<div class="text-black">
+					{{ message }}
+				</div>
+			</div>
+		{% endfor %}
+	{% endfor %}
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form method="post" action="{{ path('app_boncommande_delete') }}" id="form-delete">
+						<div class="modal-body container">
+
+							<div class="form-group col-md-12 col-sm-12">
+								<input type="hidden" class="form-control p-3" id="id-delete" name="id-delete" placeholder="id commune">
+							</div>
+							<div class="modal-body">
+								<h2 class="fs-5">Voulez-vous effectuer cette suppression ?</h2>
+
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="reset" class="btn btn-success" data-bs-dismiss="modal">Non</button>
+							<button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Oui</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<h1>Liste demandes d'achat
+	</h1>
+	<p class="mb-2">
+		<a href="{{ path('app_boncommande_new') }}">
+			<button class="btn btn-info">
+				<i class="fa fa-list"></i>
+				Nouveau</button>
+		</a>
+		<a href="{{ path('app_boncommande_index') }}">
+			<button class="btn btn-success">
+				<i class="fa fa-list"></i>
+				Bons de commande</button>
+		</a>
+		<a href="{{ path('app_boncommande_proforma') }}">
+			<button class="btn btn-success">
+				<i class="fa fa-list"></i>
+				Factures Proformas</button>
+		</a>
+		<a href="{{ path('app_reglement_index') }}">
+			<button class="btn btn-danger">
+				<i class="fa fa-list"></i>
+				Reglement Factures</button>
+		</a>
+
+	</p>
+	<table id="example-table" class="table table-sm table-bordered table-striped table-hover display" style="width:100%">
+		<thead class="bg-primary text-white text-bold">
+			<tr>
+				<th>Date edition</th>
+				<th>Client</th>
+				<th>Contact client</th>
+				<th>Po</th>
+				<th>Objet</th>
+				<th>Location Site</th>
+				<th>Code bon commande</th>
+				<th data-formater="">Action</th>
+			</tr>
+		</thead>
+
+	</table>
+
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	 <script type="text/javascript">
+	
+	    function deleteRow(value, libelle){
+	
+	        $('#id-delete').val(value) 
+	    }
+	
+	    function nextRow(value){ 
+	         
+	         var url =window.location.origin +"/boncommande/" + value+ "/proform"
+	        document.location.href=url
+	    }
+		function updateRow(value){ 
+	         
+	         var url =window.location.origin +"/boncommande/" + value+ "/editDemandeDachat"
+	        document.location.href=url
+	    }
+
+		function printDevis(value){ 
+	       		
+			Swal.fire({
+				title: 'Options d\'impression',
+				html:
+					'<div class="mb-3">' +
+					'   <label for="swal-header" class="form-label">Inclure un en-tête ?</label>' +
+					'   <select id="swal-header" class="form-select">' +
+					'       <option value="true">Oui</option>' +
+					'       <option value="false">Non</option>' +
+					'   </select>' +
+					'</div>' +
+					'<div>' +
+					'   <label for="swal-footer" class="form-label">Inclure un pied de page ?</label>' +
+					'   <select id="swal-footer" class="form-select">' +
+					'       <option value="true">Oui</option>' +
+					'       <option value="false">Non</option>' +
+					'   </select>' +
+					'</div>',
+				focusConfirm: false,
+				showCancelButton: true,
+				confirmButtonText: 'Imprimer',
+				cancelButtonText: 'Annuler',
+				preConfirm: () => {
+					return {
+						header: document.getElementById('swal-header').value === 'true',
+						footer: document.getElementById('swal-footer').value === 'true'
+					}
+				}
+			}).then((result) => {
+				if (result.isConfirmed) {
+					// Construire l'URL avec les paramètres
+					var url = window.location.origin + "/boncommande/" + value + "/printdevisclient?" + 
+							"header=" + result.value.header + "&footer=" + result.value.footer;
+					
+					// Rediriger vers l'URL
+					window.open(url, '_blank');
+				}
+			});
+	    }
+
+	     function printRow(value){
+		
+	Swal.fire({
+        title: 'Options d\'impression',
+        html:
+            '<div class="mb-3">' +
+            '   <label for="swal-header" class="form-label">Inclure un en-tête ?</label>' +
+            '   <select id="swal-header" class="form-select">' +
+            '       <option value="true">Oui</option>' +
+            '       <option value="false">Non</option>' +
+            '   </select>' +
+            '</div>' +
+            '<div>' +
+            '   <label for="swal-footer" class="form-label">Inclure un pied de page ?</label>' +
+            '   <select id="swal-footer" class="form-select">' +
+            '       <option value="true">Oui</option>' +
+            '       <option value="false">Non</option>' +
+            '   </select>' +
+            '</div>',
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Imprimer',
+        cancelButtonText: 'Annuler',
+        preConfirm: () => {
+            return {
+                header: document.getElementById('swal-header').value === 'true',
+                footer: document.getElementById('swal-footer').value === 'true'
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Construire l'URL avec les paramètres
+            var url = window.location.origin + "/boncommande/" + value + "/print2?" + 
+                      "header=" + result.value.header + "&footer=" + result.value.footer;
+            
+            // Rediriger vers l'URL
+            window.open(url, '_blank');
+        }
+    });
+
+		    }
+	    function iniTable(){
+	        $('#example-table').DataTable({
+	            select: true,
+	            ordering: true,
+	            paging: true,
+	            responsive: true,
+	            serverSide: true,
+	            searching: true,
+	            ajax: {
+	                url: '{{ path("boncommande_devis") }}',
+	                type: 'GET',
+	
+	            },
+	            columns: [
+	                
+	                { data: 'datedevis' },
+	                { data: 'client.libelle' },
+	                { data: 'client.contact1' },
+	                { data: 'po'},
+	                { data: 'jobtitle' },
+	                { data: 'sitelocation' },
+	                { data: 'codedevis' },
+	             
+	            
+	              
+	
+	                // { data: 'salary' },
+	                // { data: 'office' }
+	            ],
+	            
+	            columnDefs: [
+	                {
+	                    targets: 7,
+	                    data: 'id',
+	               render: function (data, type, row, meta) {
+   return `
+       <div>
+           <div class="d-flex mb-1">
+               <button class="update btn btn-success btn-sm me-1" onClick="javascript:nextRow(${data})" title="Transformer en proforma"><i class="fa fa-forward"></i></button>
+               <button class="btn btn-primary btn-sm me-1" onClick="javascript:printRow(${data})" title="Imprimer"><i class="fa fa-print"></i></button>
+               <button class="btn btn-info btn-sm me-1" onClick="javascript:printDevis(${data})" title="Tiré le devis"><i class="fa fa-arrow-down"></i>
+			   </button>
+           </div>
+           <div class="d-flex">
+               <button class="btn btn-warning btn-sm me-1" onClick="javascript:updateRow(${data})" title="Modifier"><i class="fa fa-edit"></i></button>
+               <button class="btn btn-danger btn-sm" onClick="javascript:deleteRow(${data})" title="Supprimer" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-trash"></i></button>
+           </div>
+       </div>
+   `;
+
+			                    }
+	                }
+	            ],
+	            layout: {
+	                topStart: {
+	                    pageLength: {
+	                        menu: [5, 10, 25, 50, 100]
+	                    },
+	                    buttons: {
+	                        buttons:['copy','excel', 'pdf','colvis']
+	                    }
+	
+	                }
+	            },
+	            language: {
+	                url: '{{ asset("DataTables/fr-FR.json") }}',
+	            }
+	        });
+	      
+	
+	        const alerts = document.querySelectorAll('[class*="alert-"]')
+	        for (const alert of alerts) {
+	            setTimeout( function() {
+	                const bootstrapAlert = bootstrap.Alert.getOrCreateInstance(alert);
+	                bootstrapAlert.close();
+	            }, 3000);
+	        }
+	
+	  
+	    }
+	
+	
+	        $(document).ready(function(){
+	            iniTable()
+	
+	        });
+	</script>
+{% endblock %}

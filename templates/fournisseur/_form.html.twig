@@ -1,0 +1,57 @@
+<div class="ibox-body">
+{{ form_start(form) }}
+
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+
+                    <div class="text-black">
+                        {{ message }}
+                    </div>
+
+            </div> 
+ 
+        {% endfor %}
+    {% endfor %}
+<div class="row">
+      <div class="form-group col-sm-6">
+          <label class="text-size" id="libelle">Fournisseur * </label>
+              {{ form_widget(form.libelle, {'attr':{'class':'form-control input','placeholder':'Nom du founisseur'}}) }}
+          <br>
+      </div>
+        <div class="form-group col-sm-6">
+          <label class="text-size" id="contact">Contact * </label>
+              {{ form_widget(form.contact, {'attr':{'class':'form-control input','placeholder':'Contact du founisseur'}}) }}
+          <br>
+      </div>
+        <div class="form-group col-sm-6">
+          <label class="text-size" id="email">Emal * </label>
+              {{ form_widget(form.email, {'attr':{'class':'form-control input','placeholder':'Email du founisseur'}}) }}
+          <br>
+      </div>
+        <div class="form-group col-sm-6">
+          <label class="text-size" id="adresse">Adresse  </label>
+              {{ form_widget(form.adresse, {'attr':{'class':'form-control input','placeholder':'Adresse du founisseur'}}) }}
+          <br>
+      </div>
+        <div class="form-group col-sm-6">
+          <label class="text-size" id="langue">Langue </label>
+              {{ form_widget(form.langue, {'attr':{'class':'form-control input'}}) }}
+          <br>
+      </div>
+        <div class="form-group col-sm-6">
+          <label class="text-size" id="brochure">Logo </label>
+              {{ form_widget(form.brochure, {'attr':{'class':'form-control input'}}) }}
+          <br>
+      </div>
+      <div class="row"> 
+          <div class="col-md-4">
+      {{ form_row(form.save, {'label':'Enregistrer ','attr':{'value':'save', 'class':'btn bt-md btn-success fa fa-save'}}) }}</div>
+           <div class="col-md-4">
+      {{ form_row(form.saveAndAdd, {'label':'Enregistrer ++ ','attr':{'value':'saveAndAdd', 'class':'btn btn-success fa fa-save '}}) }}</div>
+          <div class="col-md-4"><a href="{{ path('app_fournisseur_index') }}" class="btn btn-primary fa fa-list">Afficher la liste</a> </div>
+      </div>
+</div>
+
+{{ form_end(form) }}
+</div>

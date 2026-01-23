@@ -1,0 +1,96 @@
+{% extends 'accueil/index.html.twig' %}
+
+{% block title %}ENtreprise index{% endblock %}
+
+{% block body %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Liste des clients</h3>
+        </div>
+        {% for message in app.flashes('message') %}
+            <div class="primary">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+
+
+        <div class="card-body">
+
+
+
+            <hr style="visibility: hidden" />
+            <table class="table table-bordered" id="example" width="100%" cellspacing="0">
+
+                <thead>
+                    <tr style="text-align: center">
+
+                        <th>Entreprise</th>
+                        <th>Contact</th>
+                        <th>Siège</th>
+                        <th>Logo</th>
+                        <th>Etat</th>
+                        <th>Modifier</th>
+                        <th>Gestion compte</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entreprise in entreprises %}
+                        <tr>
+
+                            <td>{{ entreprise.libelle }}</td>
+                            <td>{{ entreprise.contact1 }}</td>
+                            <td>{{ entreprise.ville }}</td>
+                            <td>  {% if entreprise.brochureFilename is not empty %}
+                                <img src="{{ asset('uploads/brochures/'~entreprise.brochureFilename )}}"    class="rounded-circle img-fluid" style="width: 150px;"/>  
+                            {% else %} {% endif %}</td>
+
+                                <td>
+                                    {% if entreprise.etat == 1 %}<button class="btn btn-success"> Actif </button>{% elseif entreprise.etat==0  %} <button class="btn btn-danger"> Fermé </button>{% endif %}
+                                </td>
+                                <td>        <a href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}"> 
+                                        <span style="font-size: 1em; color: Dodgerblue;">
+
+                                            <i class="fas fa-edit" title="Modifier"></i>
+                                        </span></a>
+                                </td>
+                                <td>
+                                    {% if entreprise.etat == 1 %}
+                                        <form method="post" action="{{ path('app_entreprise_delete', {'id': entreprise.id}) }}" onsubmit="return confirm('Voulez-vous fermer ce compte?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entreprise.id) }}">
+
+                                            <button class="btn">
+
+                                                <span style="font-size: 1em; color: blue;">
+                                                    <i class="fas fa-edit" title="Fermer ce compte"></i>
+                                                </span>
+                                            </button>
+                                        </form>
+
+                                    {% elseif entreprise.etat == 0  %}
+
+
+
+
+                                        <form method="post" action="{{ path('app_entreprise_active', {'id': entreprise.id}) }}" onsubmit="return confirm('Voulez-vous activer ce compte?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('active' ~ entreprise.id) }}">
+
+                                            <button class="btn">
+                                                <span style="font-size: 1em; color: red;">
+                                                    <i class="fas fa-trash-alt" title="Activer ce compte"></i>
+                                                </span>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {% endblock %}

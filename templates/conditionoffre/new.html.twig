@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Condition Offre{% endblock %}
+
+{% block body %}
+    <div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <h1>Creation Condition Offre</h1>
+        </div>
+    </div>
+    {{ include('conditionoffre/_form.html.twig') }}
+</div>
+
+    {# <a href="{{ path('app_conditionoffre_index') }}">back to list</a> #}
+{% endblock %}

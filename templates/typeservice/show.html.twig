@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Typeservice{% endblock %}
+
+{% block body %}
+    <h1>Typeservice</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ typeservice.id }}</td>
+            </tr>
+            <tr>
+                <th>Libellefr</th>
+                <td>{{ typeservice.libellefr }}</td>
+            </tr>
+            <tr>
+                <th>Libelleen</th>
+                <td>{{ typeservice.libelleen }}</td>
+            </tr>
+            <tr>
+                <th>Identreprise</th>
+                <td>{{ typeservice.identreprise }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ typeservice.createdAt ? typeservice.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ typeservice.updatedAt ? typeservice.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ typeservice.deletedAt ? typeservice.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ typeservice.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ typeservice.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>DeletedBy</th>
+                <td>{{ typeservice.deletedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_typeservice_index') }}">back to list</a>
+
+    <a href="{{ path('app_typeservice_edit', {'id': typeservice.id}) }}">edit</a>
+
+    {{ include('typeservice/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Impression demande d'achat</title>
+
+	
+		<style type="text/css">
+			* {
+				font-family: Verdana, Arial, sans-serif;
+			}
+			table {
+				font-size: x-small;
+			}
+			tfoot tr td {
+				font-weight: bold;
+				font-size: x-small;
+			}
+
+			.gray {
+				background-color: lightgray
+			}
+			  span {  font-size: 10pt;  }
+		</style>
+		<style>
+			footer {
+				position: fixed;
+				bottom: -60px;
+				left: 0;
+				right: 0;
+				height: 60px;
+				 font-size: x-small; 
+				/** Extra personal styles **/
+
+				color: black;
+				text-align: center;
+				line-height: 15px;
+			}
+						.entete {
+				border: 2px solid black;
+				border-collapse: collapse;
+				padding: 10px auto;
+			}
+			.total {
+				border: 2px solid black;
+				border-collapse: collapse;
+				padding: 25px auto;
+				font-size: 13pt;
+			}
+			.ligne {
+				padding: 3px auto;
+				border-right: 2px solid black;
+				border-collapse: collapse;
+			}
+			.bordure {
+				border: 3px solid black;
+				border-collapse: collapse;
+			}
+			.tete {
+				text-transform: capitalize;
+				font-weight: bold;
+			}
+			.corps {
+				text-transform: capitalize;
+				font-style: italic; 
+				color : black;
+			}
+			.direction {
+				font-weight: bold;
+				font-size: 10pt;
+				text-decoration: underline;
+			}
+			.type {
+				font-weight: bold;
+				font-size: 10pt;
+				margin: 0 0 0 0;
+			}
+			.produit {
+				font-size: 12pt;
+				font-weight: bold;
+				text-decoration: underline;
+				margin: 0 0 0 0;
+
+			}
+			.detail {
+				font-size: 9pt;
+				font-style: italic;
+				margin: 0 0 0 90px;
+			}
+		</style>
+
+	</head>
+	<body>
+
+		<table width="100%">
+			<tr>
+				{% if header == 'true' %}
+					<td valign="top"><img src="{{ base64(absolute_url(asset('uploads/brochures/header.png' ))) }}" style="img {  border: 1px solid #ddd; border-radius: 4px;  margin: -40px 0 0 -20px ;  width:750px; }" alt="logo">
+				</td>
+				{% elseif header == 'false' %}
+					<br><br><br>
+				{% endif %}
+			</tr>
+		</table>
+
+			<table width="85%" style="margin: 0 0 0 50px;">
+			<tr>
+				<td class="tete" >N° Demande d'achat</td>
+				<td align="right" class="tete">Date de la demande d'achat</td>
+			</tr>
+			<tr>
+				<td class="corps">{{ boncommandes.codedevis }}</td>
+				<td class="corps" align="right"> {{ boncommandes.datedevis|format_datetime('full', 'none', locale: 'fr') }}</td>
+			</tr>
+		</table>
+
+		<br/>
+
+<table width="100%" style="border-collapse: collapse;">
+			<thead >
+				<tr class="entete">
+					<th class="entete" width="350px">DESIGNATION</th>
+					<th class="entete" width="80px">PRIX UNIT</th>
+					<th class="entete" width="60px">QUANTITE</th>
+				</tr>
+			</thead>
+			<tbody style="border: 2px solid black; border-collapse: collapse;">
+				{% set count = 0 %}
+				{% for detailcommande in boncommandes.detailcommandes %}
+					{% set qte = detailcommande.quantite %}
+					{% set count = count + 1 %}
+						{% if qte == 0 %}
+						{% else %}
+							{% if detailcommande.article %}
+								<tr>
+									<td class="ligne" >
+									<span class='produit' >*{{ detailcommande.article.libellefr|capitalize  }}</span>
+									<br>
+									<span class='detail'  >{{ detailcommande.article.detailarticle|raw  }}</span>
+									</td>
+									<td align="center" class="ligne">{{ detailcommande.prixunitaire|number_format(0, '.', ' ') }}</td>
+									<td align="center" class="ligne">{{ detailcommande.quantite }}</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td class="ligne" >
+									<span class='produit'  >*{{ detailcommande.service.libellefr|capitalize  }}</span>
+									<br>
+									<span class='detail'  >{{ detailcommande.service.detailservice|raw  }}</span>
+									</td>
+									<td align="center" class="ligne">{{ detailcommande.prixunitaire|number_format(0, '.', ' ') }}</td>
+									<td align="center" class="ligne">{{ detailcommande.quantite }}</td>
+								</tr>
+							{% endif %}
+						{% endif %}
+				{% endfor %}
+				</tbody>
+			</tbody>
+		</table>
+		<br>
+		<table width="90%">
+
+			<tr align="right">
+				<td class="direction">
+					LA DIRECTION
+				</td>
+			</tr>
+		</table>
+	<footer>
+			{% if footer == 'true' %}
+				<img src="{{ base64(absolute_url(asset('uploads/brochures/footer.png' ))) }}" style="img { border: 1px solid #ddd; border-radius: 4px;  margin: -40px 0 0 -20px ;  width:750px; }" alt="logo">
+			{% elseif footer == 'false'  %}
+					
+			{% endif %}
+	</footer>
+	
+		<br/>
+
+	</body>
+</html>
+ 
+			

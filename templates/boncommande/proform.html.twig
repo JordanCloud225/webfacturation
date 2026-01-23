@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Creation proforma
+{% endblock %}
+
+{% block body %}
+	<div class="ibox">
+
+
+		{{ form_start(form) }}
+
+		{% for label, messages in app.flashes(['success', 'warning']) %}
+			{% for message in messages %}
+				<div class="alert alert-success">
+
+					<div class="text-black">
+						{{ message }}
+					</div>
+
+				</div>
+
+			{% endfor %}
+		{% endfor %}
+
+		<div class="ibox-head">
+			<div class="ibox-title">
+				<h1>Conversion en Proforma</h1>
+			</div>
+		</div>
+		<div class="row">
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="client">Client
+						</label>
+						{{ form_widget(form.client, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="datecommande">Date
+						</label>
+						{{ form_widget(form.dateproforma, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="po">PO
+						</label>
+						{{ form_widget(form.po, {'attr':{'class':'form-control input','readonly' : 'readonly'}}) }}
+
+					</div>
+
+
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="jobtitle">Objet
+						</label>
+						{{ form_widget(form.jobtitle, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="sitelocation">Location Site
+						</label>
+						{{ form_widget(form.sitelocation, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+
+						<div class="form-group col-sm-3">
+						<label class="text-size" id="delivraydelai">Délai de livraison
+						</label>
+						{{ form_widget(form.delivraydelai, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+				</div>
+
+		<div class="row">
+			<div class="form-group col-sm-3">
+				<label class="text-size" id="montantremise">Montant remise
+				</label>
+				{{ form_widget(form.montantremise, {'attr':{'class':'form-control input'}}) }}
+
+			</div>
+			<div class="form-group col-sm-3">
+					<label class="text-size" id="tva">Montant théorique
+					</label>
+				<input class="form-control" type="text" readonly placeholder="Montant TVA " value="{{boncommande.reste}}" name="boncommande.reste" id="boncommande.reste">
+
+					<br>
+				</div>
+			{# <div class="form-group col-sm-3">
+				<label class="text-size" id="type">TVA ?
+				</label>
+				{{ form_widget(form.type, {'attr':{'class':'form-control'}}) }}
+				<br>
+			</div> #}
+            <div class="form-group col-sm-3">
+                <label for="jobtitle">Condition d'offre</label>
+                {{ form_widget(form.conditionoffre, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+		</div>
+
+		 <div >
+				<div class="offset-4"><h2>Article, service et quantité désirée</h2></div>  
+
+				{% for child in detailcommande %}
+				<div class="row">
+					{% if child.article %}
+						<div class="form-group col-sm-3 offset-3">
+							<label>Article</label>
+							<input class=" form-control input" type="text" readonly value="{{ child.article.libellefr}}">
+						</div>
+						{% else %}
+						<div class="form-group col-sm-3 offset-3">
+							<label>Service</label>
+							<input class=" form-control input" type="text" readonly value="{{ child.service.libellefr }}">
+						</div>
+					{% endif %}
+                    <div class="form-group col-sm-3">
+                        <label>Quantite</label>
+                        <input class=" form-control input" type="text" readonly value="{{ child.quantite }}">
+					</div>
+                </div>
+			{% endfor %}
+
+			<span></span>
+   		</div>
+
+
+		<div class="row">
+	        <div class="col-md-3 offset-4">
+				<button type="submit" class="btn btn-success fa fa-check">Enregistrer </button>
+			</div>
+            <div class="col-md-3">
+				<a href="{{ path('app_boncommande_proforma') }}" class="btn btn-primary fa fa-list">Retour à la liste</a>
+			</div>
+
+		</div>
+	</div>
+			{{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialisation de la collection
+        const collection = document.querySelector("#detailcommandes");
+        const span = collection.querySelector("span");
+
+        
+        collection.dataset.index = collection.querySelectorAll("input").length;
+
+        
+
+    });
+
+    function addButton(collection) {
+        const prototype = collection.dataset.prototype;
+        const index = collection.dataset.index;
+        const newPrototype = prototype.replace(/__name__/g, index);
+
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = newPrototype;
+        const newForm = tempDiv.firstElementChild;
+
+        const listItem = document.createElement("li");
+        listItem.className = "d-flex align-items-center mb-2";
+
+        // Ajout des champs
+        listItem.appendChild(newForm.querySelector("[name*='[article]']"));
+        listItem.appendChild(newForm.querySelector("[name*='[quantite]']"));
+
+        listItem.appendChild(boutonSuppr);
+        collection.querySelector("ul").appendChild(listItem);
+        collection.dataset.index++;
+    }
+
+    
+</script>
+{% endblock %}

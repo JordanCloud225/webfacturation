@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ app.user.nom }}
+{% endblock %}
+
+{% block body %}
+
+	<div class="ibox">
+		<div class="ibox-head">
+			<div class="ibox-title">
+				<h1>{{ app.user.nom }}</h1>
+			</div>
+		</div>
+
+
+		<div class="ibox-body">
+			{{ form_start(form) }}
+
+
+			<div class="row">
+
+
+				<div class="form-group col-sm-6">
+					<label class="text-size" id="nom">Nom & Prénoms *
+					</label>
+					{{ form_widget(form.nom, {'attr':{'class':'form-control','placeholder':'Nom et prenoms'}}) }}
+				</div>
+
+				<div class="form-group col-sm-6">
+
+					<label class="text-size" id="contact">Contact
+					</label>
+					{{ form_widget(form.contact, {'attr':{'class':'form-control','placeholder':'Contact'}}) }}
+				</div>
+
+
+				<div class="form-group col-sm-6">
+					<label class="text-size" id="roles">Nouvelle photo
+					</label>
+					{{ form_widget(form.photo, {'attr':{'class':'form-control'}}) }}
+				</div>
+
+			</div>
+			<div class="row">
+				{% if app.request.attributes.get('_route') == 'app_registration_editprofil' %}
+					{% if user.brochureFilename is not empty %}
+
+
+						<p>
+							<img src="{{ asset('uploads/brochures/'~user.brochureFilename )}}" alt="Image" width="150">
+						</p>
+
+						{% else %}
+
+					{% endif %}
+				{% endif %}
+
+			</div>
+			<hr style="visibility: hidden;"/>
+			<div class="row">
+
+ <div class="col-md-2">
+				<button class="btn bt-md btn-success fa fa-save">{{ button_label|default('Modifier') }}</button>
+
+ </div>
+  <div class="col-md-2">
+				<a href="{{ path('app_accueil') }}" class="btn btn-primary fa fa-list" title="Retour">
+				
+				</a>
+  </div>
+
+			</div>
+
+			{{ form_end(form) }}
+		</div>
+	</div>
+
+
+{% endblock %}

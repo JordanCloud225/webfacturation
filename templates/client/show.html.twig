@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client{% endblock %}
+
+{% block body %}
+    <h1>Client</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ client.id }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ client.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ client.email }}</td>
+            </tr>
+            <tr>
+                <th>Contact1</th>
+                <td>{{ client.contact1 }}</td>
+            </tr>
+            <tr>
+                <th>Contact2</th>
+                <td>{{ client.contact2 }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ client.adresse }}</td>
+            </tr>
+            <tr>
+                <th>Complementadresse</th>
+                <td>{{ client.complementadresse }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ client.pays }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                <td>{{ client.ville }}</td>
+            </tr>
+            <tr>
+                <th>Codepostal</th>
+                <td>{{ client.codepostal }}</td>
+            </tr>
+            <tr>
+                <th>Codenaf</th>
+                <td>{{ client.codenaf }}</td>
+            </tr>
+            <tr>
+                <th>Siren</th>
+                <td>{{ client.siren }}</td>
+            </tr>
+            <tr>
+                <th>Numtv</th>
+                <td>{{ client.numtv }}</td>
+            </tr>
+            <tr>
+                <th>Sitweb</th>
+                <td>{{ client.sitweb }}</td>
+            </tr>
+            <tr>
+                <th>Langue</th>
+                <td>{{ client.langue }}</td>
+            </tr>
+            <tr>
+                <th>Identreprise</th>
+                <td>{{ client.identreprise }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ client.etat ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>BrochureFilename</th>
+                <td>{{ client.brochureFilename }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ client.createdAt ? client.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ client.updatedAt ? client.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ client.deletedAt ? client.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ client.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ client.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>DeletedBy</th>
+                <td>{{ client.deletedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_client_index') }}">back to list</a>
+
+    <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+
+    {{ include('client/_delete_form.html.twig') }}
+{% endblock %}

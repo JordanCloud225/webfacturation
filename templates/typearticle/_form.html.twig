@@ -1,0 +1,31 @@
+<div class="ibox-body">
+{{ form_start(form) }}
+
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+
+                    <div class="text-black">
+                        {{ message }}
+                    </div>
+
+            </div> 
+
+        {% endfor %}
+    {% endfor %}
+    
+       <div class="form-group col-sm-6">
+          <label class="text-size" id="libellefr">Libellé </label>
+              {{ form_widget(form.libellefr, {'attr':{'class':'form-control input','placeholder':'Libellé '}}) }}
+          <br>
+      </div>
+      <div class="row"> 
+          <div class="col-md-2">
+      {{ form_row(form.save, {'label':'Enregistrer ','attr':{'value':'save', 'class':'btn bt-md btn-success fa fa-save'}}) }}</div>
+           <div class="col-md-2">
+      {{ form_row(form.saveAndAdd, {'label':'Enregistrer ++ ','attr':{'value':'saveAndAdd', 'class':'btn btn-success fa fa-save '}}) }}</div>
+          <div class="col-md-2"><a href="{{ path('app_typearticle_index') }}" class="btn btn-primary fa fa-list">Afficher la liste</a> </div>
+
+ 
+{{ form_end(form) }}
+      </div>

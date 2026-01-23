@@ -1,0 +1,58 @@
+<div class="ibox-body">
+{{ form_start(form) }}
+
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+
+                    <div class="text-black">
+                        {{ message }}
+                    </div>
+
+            </div> 
+
+        {% endfor %}
+    {% endfor %}
+<div class="row"> 
+      <div class="form-group col-sm-4">
+          <label class="text-size" id="datedepense">Date </label>
+              {{ form_widget(form.datedepense, {'attr':{'class':'form-control input'}}) }}
+        
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="objetdepense">Objet * </label>
+              {{ form_widget(form.objetdepense, {'attr':{'class':'form-control input'}}) }}
+        
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="montant">Montant * </label>
+              {{ form_widget(form.montant, {'attr':{'class':'form-control input','placeholder':'Montant de la depense'}}) }}
+        
+      </div>
+      <div class="form-group col-sm-4">
+          <label class="text-size" id="detail">Bénéficiaire </label>
+              {{ form_widget(form.beneficiaire, {'attr':{'class':'form-control input','placeholder':'Bénéficiaire'}}) }}
+      {# </div>
+      <div class="form-group col-sm-4"> #}
+          <label class="text-size" id="detail">Entrée/Sortie </label>
+              {{ form_widget(form.typedepense, {'attr':{'class':'form-control input'}}) }}
+      </div>
+        <div class="form-group col-sm-4">
+          <label class="text-size" id="brochure">Photo reçu </label>
+              {{ form_widget(form.brochure, {'attr':{'class':'form-control input','placeholder':'Nom de la marque'}}) }}
+      </div>
+      <div class="form-group col-sm-4">
+          <label class="text-size" id="detail">Description </label>
+              {{ form_widget(form.detail, {'attr':{'class':'form-control input','placeholder':'Details depense'}}) }}
+      </div>
+</div>
+      <div class="row"> 
+          <div class="col-md-2">
+      {{ form_row(form.save, {'label':'Enregistrer ','attr':{'value':'save', 'class':'btn bt-md btn-success fa fa-save'}}) }}</div>
+           <div class="col-md-2">
+      {{ form_row(form.saveAndAdd, {'label':'Enregistrer ++ ','attr':{'value':'saveAndAdd', 'class':'btn btn-success fa fa-save '}}) }}</div>
+          <div class="col-md-4"><a href="{{ path('app_depense_index') }}" class="btn btn-primary fa fa-list">Afficher la liste</a> </div>
+      </div>
+
+{{ form_end(form) }}
+</div>

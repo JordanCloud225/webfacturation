@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fabricant{% endblock %}
+
+{% block body %}
+    <h1>Fabricant</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fabricant.id }}</td>
+            </tr>
+            <tr>
+                <th>Libellefr</th>
+                <td>{{ fabricant.libellefr }}</td>
+            </tr>
+            <tr>
+                <th>Libelleen</th>
+                <td>{{ fabricant.libelleen }}</td>
+            </tr>
+            <tr>
+                <th>Identreprise</th>
+                <td>{{ fabricant.identreprise }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ fabricant.createdAt ? fabricant.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ fabricant.updatedAt ? fabricant.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ fabricant.deletedAt ? fabricant.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ fabricant.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ fabricant.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>DeletedBy</th>
+                <td>{{ fabricant.deletedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_fabricant_index') }}">back to list</a>
+
+    <a href="{{ path('app_fabricant_edit', {'id': fabricant.id}) }}">edit</a>
+
+    {{ include('fabricant/_delete_form.html.twig') }}
+{% endblock %}

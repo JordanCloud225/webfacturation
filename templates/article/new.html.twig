@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Article{% endblock %}
+
+{% block body %}
+      <div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <h1>Création article</h1>
+        </div>
+    </div>
+
+
+    {{ include('article/_form.html.twig') }}
+ </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+        const richEditor = document.getElementById('richEditor');
+        const textarea = document.getElementById('detailarticle');
+        const charCountElement = document.getElementById('charCount');
+        
+        // Initialiser le compteur de caractères
+        updateCharacterCount();
+        
+        function formatText(format) {
+            document.execCommand(format, false, null);
+            updateCharacterCount();
+            syncWithTextarea();
+        }
+        
+        function insertList(type) {
+            if (type === 'unordered') {
+                document.execCommand('insertUnorderedList', false, null);
+            } else {
+                document.execCommand('insertOrderedList', false, null);
+            }
+            updateCharacterCount();
+            syncWithTextarea();
+        }
+        
+        function updateCharacterCount() {
+            const text = richEditor.innerText || '';
+            const charCount = text.length;
+            charCountElement.textContent = charCount;
+        }
+        
+        function syncWithTextarea() {
+            // Synchroniser le contenu de l'éditeur avec le textarea caché
+            textarea.value = richEditor.innerHTML;
+        }
+        
+        function submitForm() {
+            // Synchroniser une dernière fois avant soumission
+            syncWithTextarea();
+            
+            // Afficher le contenu dans la console pour démonstration
+            console.log("Contenu HTML:", textarea.value);
+            
+            // Ici, vous soumettriez normalement le formulaire
+            alert("Le formulaire a été soumis! Vérifiez la console pour le contenu HTML.");
+        }
+        
+        // Synchroniser lors de la frappe
+        richEditor.addEventListener('input', syncWithTextarea);
+        
+        // Synchroniser lors de la perte de focus
+        richEditor.addEventListener('blur', syncWithTextarea);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+ 

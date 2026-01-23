@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Details paiement
+{% endblock %}
+
+{% block body %}
+	{% for label, messages in app.flashes(['success', 'warning']) %}
+		{% for message in messages %}
+			<div class="alert alert-success">
+
+				<div class="text-black">
+					{{ message }}
+				</div>
+
+			</div>
+
+		{% endfor %}
+	{% endfor %}
+	<div class="modal fade" id="staticBackdrop-delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header bg-danger">
+					<h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">Suppression</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+						<i class="fa fa-close"></i>
+					</button>
+				</div>
+				<form method="post" action="{{ path('app_boncommande_delete') }}" id="form-delete">
+					<div class="modal-body container">
+
+						<div class="form-group col-md-12 col-sm-12">
+							<input type="hidden" class="form-control p-3" id="id-delete" name="id-delete" placeholder="id commune">
+						</div>
+						<div class="form-group col-md-12 col-sm-12">
+							<label for="libelle" class="label">
+								<b style="font-size: large;">Voulez-vous supprimer cet enregistrement ?</b>
+							</label><br>
+							<span class="text-black-50 p-6"></span>
+						</div>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="reset" class="btn btn-sm btn-info" data-bs-dismiss="modal">Non</button>
+						<button type="submit" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Oui</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<h1>Details paiement
+	</h1>
+	<a href="{{ path('app_boncommande_index2') }}">
+		<button class="btn btn-success">
+			<i class="fa fa-list"></i>
+			Demandes d'achat</button>
+	</a>
+	<a href="{{ path('app_boncommande_proforma') }}">
+		<button class="btn btn-success">
+			<i class="fa fa-list"></i>
+			Factures Proformas</button>
+	</a>
+	<a href="{{ path('app_reglement_index') }}">
+		<button class="btn btn-danger">
+			<i class="fa fa-list"></i>
+			Reglement Facture</button>
+	</a>
+
+</p>
+<table id="example-table" class="table table-sm table-bordered table-striped table-hover display" style="width:100%">
+	<thead class="bg-primary text-white text-bold">
+		<tr>
+			<th>Date Paiement</th>
+			<th>Client</th>
+			<th>Contact du client</th>
+			<th>N° Facture</th>
+			<th>Montant Net </th>
+			<th>Montant payé</th>
+			<th>Reste</th>
+            				<th data-formater="">Action</th>
+
+			
+		</tr>
+	</thead>
+
+</table>{% endblock %}{% block javascripts %}
+{{ parent() }}
+ <script type="text/javascript">
+
+    function deleteRow(value, libelle){
+
+        $('#id-delete').val(value)
+    }
+
+    function updateRow(value){
+
+         var url = window.location.href+ value+"/edit"
+        document.location.href=url
+    }
+    function iniTable(){
+        $('#example-table').DataTable({
+            select: true,
+            ordering: true,
+            responsive: true,
+            paging: true,
+            processing: true,
+            serverSide: true,
+            searching: true,
+            ajax: {
+                url: '{{ path("detailreglement_lister") }}',
+                type: 'GET',
+
+            },
+            columns: [
+ 	                { data: 'datepaiement' },
+                    { data: 'reglement.facture.boncommande.client.libelle' },
+	                { data: 'reglement.facture.boncommande.client.contact1' },
+	                { data: 'reglement.facture.numfacture' },
+                    { data: 'reglement.facture.netpayee' },
+                    { data: 'montantpaye' },
+	                { data: 'reste' }
+                          
+
+                // { data: 'salary' },
+                // { data: 'office' }
+            ],
+            columnDefs: [
+                 {
+	                    targets: 7,
+	                    data: 'id',
+	                    render: function (data, type, row, meta) {
+	                        return '<button class="update btn btn-sm btn-success" onClick="javascript:updateRow('+ data + ')" title="Transformer en facfture finale"><i class="fa fa-edit"></i></button>\n\
+	               <button class="delete btn btn-sm btn-danger" onClick="javascript:deleteRow('+ data + ')" title="Supprimer" data-bs-toggle="modal" data-bs-target="#staticBackdrop-delete"><i class="fa fa-trash"></i></button>';
+	                    }
+	                }
+            ],
+            layout: {
+                topStart: {
+                    pageLength: {
+                        menu: [5, 10, 25, 50, 100]
+                    },
+                    buttons: {
+                        buttons:['copy','excel', 'pdf','colvis']
+                    }
+
+                }
+            },
+            language: {
+                url: '{{ asset("DataTables/fr-FR.json") }}',
+            }
+        });
+      
+
+        const alerts = document.querySelectorAll('[class*="alert-"]')
+        for (const alert of alerts) {
+            setTimeout( function() {
+                const bootstrapAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bootstrapAlert.close();
+            }, 3000);
+        }
+
+  
+    }
+
+
+        $(document).ready(function(){
+            iniTable()
+
+        });
+</script>{% endblock %}

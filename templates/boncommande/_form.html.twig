@@ -1,0 +1,93 @@
+{% use 'form_div_layout.html.twig' %}
+
+{# Surcharge des blocs pour personnalisation #}
+
+
+
+{# Début du formulaire #}
+<div class="ibox-body">
+    {{ form_start(form) }}
+
+    {# Gestion des messages flash #}
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                <div class="text-black">
+                    {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# Champs principaux du formulaire #}
+    <div class="row gx-3">
+        <div class="col">
+            <div class="form-group">
+                <label for="client">Client</label>
+                {{ form_widget(form.client, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="datedevis">Date</label>
+                {{ form_widget(form.datedevis, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="po">PO</label>
+                    {{ form_widget(form.po, {
+                        'attr': {
+                            'class': 'form-control',
+                            'readonly': 'readonly',
+                            'value': newPo  
+                        }
+                    }) }}          
+            </div> 
+        </div>
+        </div>
+        <div class="row gx-3">
+        <div class="col">
+            <div class="form-group">
+                <label for="jobtitle">Objet</label>
+                {{ form_widget(form.jobtitle, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="sitelocation">Location Site</label>
+                {{ form_widget(form.sitelocation, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="form-group col-sm-3">
+            <label class="text-size" id="type">TVA ?
+            </label>
+            {{ form_widget(form.type, {'attr':{'class':'form-control'}}) }}
+            <br>
+        </div>
+    </div>
+
+
+    {# Section des commandes détaillées #}
+   <div id="detailcommandes" data-prototype="{{ form_widget(form.detailcommandes.vars.prototype)|e('html_attr') }}">
+    <ul class="list-unstyled">
+
+    </ul>
+    <span></span>
+</div>
+
+    {# Boutons d'action #}
+    <div class="row" style="margin-left: 700px;">
+        <div class="col-md-3">
+            {{ form_row(form.save, {'label': 'Enregistrer', 'attr': {'value': 'save', 'class': 'btn bt-md btn-success fa fa-save'}}) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.saveAndAdd, {'label': 'Enregistrer ++', 'attr': {'value': 'saveAndAdd', 'class': 'btn btn-success fa fa-save'}}) }}
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('app_boncommande_index2') }}" class="btn btn-primary fa fa-list">Afficher la liste</a>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+</div>

@@ -1,0 +1,73 @@
+{% use 'form_div_layout.html.twig' %}
+
+{# Personnalisation du rendu des lignes (form_row) #}
+{% block form_row %}
+    {% if form.vars.exclude_from_custom_layout is defined and form.vars.exclude_from_custom_layout %}
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    {% elseif form.parent and 'collection' in form.parent.vars.block_prefixes %}
+        {# Vérifier si on est dans le bon formulaire en remontant les parents #}
+        {% set should_apply_custom_layout = false %}
+        
+        {# Vérifier le parent direct #}
+        {% if form.parent.vars.apply_custom_layout is defined and form.parent.vars.apply_custom_layout %}
+            {% set should_apply_custom_layout = true %}
+        {% endif %}
+        
+        {# Vérifier le parent du parent (formulaire racine) #}
+        {% if form.parent.parent and form.parent.parent.vars.apply_custom_layout is defined and form.parent.parent.vars.apply_custom_layout %}
+            {% set should_apply_custom_layout = true %}
+        {% endif %}
+        
+        {% if should_apply_custom_layout %}
+            {# Rendu personnalisé #}
+            <div class="row mb-3">
+                {% if form.vars.name == 'article' or form.vars.name == 'quantite' %}
+                    {# Ignore ces champs #}
+                {% else %}
+                    <div class="col-md-12">
+                        {{ form_label(form) }}
+                        {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            {# Rendu normal #}
+
+        {% endif %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{# Personnalisation des widgets (form_widget) #}
+{# Personnalisation des widgets (form_widget) #}
+{% block form_widget %}
+    {% if form.parent and 'collection' in form.parent.vars.block_prefixes and form.parent.vars.name == 'detailcommandes' %}
+        {# Rendu spécifique pour les champs article, quantité, et bouton supprimer #}
+        <div class="row mb-3 align-items-center">
+           <div class="col-md-3 offset-2">
+
+                <div class="article-field">
+                    {{ form_widget(form.children.article, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="service-field">
+                    {{ form_widget(form.children.service, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-3">
+                {{ form_widget(form.children.quantite, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            {# <div class="col-md-3 text-end">
+                {% if form.children._delete is defined %}
+                    {{ form_widget(form.children._delete, {'attr': {'class': 'btn btn-danger'}}) }}
+                {% endif %}
+            </div> #}
+        </div>
+    {% else %}
+        {# Rendu par défaut pour tous les autres widgets #}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

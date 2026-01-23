@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detailreglement{% endblock %}
+
+{% block body %}
+    <h1>Detailreglement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ detailreglement.id }}</td>
+            </tr>
+            <tr>
+                <th>Montantpaye</th>
+                <td>{{ detailreglement.montantpaye }}</td>
+            </tr>
+            <tr>
+                <th>Datepaiement</th>
+                <td>{{ detailreglement.datepaiement ? detailreglement.datepaiement|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Identreprise</th>
+                <td>{{ detailreglement.identreprise }}</td>
+            </tr>
+            <tr>
+                <th>Reste</th>
+                <td>{{ detailreglement.reste }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ detailreglement.createdAt ? detailreglement.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ detailreglement.updatedAt ? detailreglement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ detailreglement.deletedAt ? detailreglement.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ detailreglement.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ detailreglement.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>DeletedBy</th>
+                <td>{{ detailreglement.deletedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_detailreglement_index') }}">back to list</a>
+
+    <a href="{{ path('app_detailreglement_edit', {'id': detailreglement.id}) }}">edit</a>
+
+    {{ include('detailreglement/_delete_form.html.twig') }}
+{% endblock %}

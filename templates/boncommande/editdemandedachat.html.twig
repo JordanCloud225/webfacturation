@@ -1,0 +1,389 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demande d'achat
+{% endblock %}
+
+{% block body %}
+	<div class="ibox">
+		<div class="ibox-head">
+			<div class="ibox-title">
+				<h1>Modification de la Demande d'achat</h1>
+			</div>
+		</div>
+
+
+<div class="ibox-body">
+    {{ form_start(form) }}
+
+    {# Gestion des messages flash #}
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                <div class="text-black">
+                    {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# Champs principaux du formulaire #}
+    <div class="row gx-3">
+        <div class="col">
+            <div class="form-group">
+                <label for="client">Client</label>
+                {{ form_widget(form.client, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="datedevis">Date</label>
+                {{ form_widget(form.datedevis, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="po">PO</label>
+                    {{ form_widget(form.po, {
+                        'attr': {
+                            'class': 'form-control',
+                            'readonly': 'readonly',
+                            'value': newPo  
+                        }
+                    }) }}          
+             </div> 
+        </div>
+        </div>
+        <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="jobtitle">Objet</label>
+                {{ form_widget(form.jobtitle, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="sitelocation">Location Site</label>
+                {{ form_widget(form.sitelocation, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="sitelocation">Tva</label>
+                {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div id="detailcommandes" data-prototype="{{ form_widget(form.detailcommandes.vars.prototype)|e('html_attr') }}">
+        <ul class="list-unstyled">
+            {% for child in form.detailcommandes %}
+        <li class="d-flex align-items-center mb-2">
+            <div class="me-2 flex-grow-1 article-field" {% if child.article is not defined %} style="display:none;" {% endif %}>
+                {% if child.article is defined %}
+                    {{ form_widget(child.article, {'attr': {'class': 'form-control'}}) }}
+                {% endif %}
+            </div>
+            <div class="me-2 flex-grow-1 service-field" {% if child.service is not defined %} style="display:none;" {% endif %}>
+                {% if child.service is defined %}
+                    {{ form_widget(child.service, {'attr': {'class': 'form-control'}}) }}
+                {% endif %}
+            </div>
+            <div class="me-2 flex-grow-1">
+                {{ form_widget(child.quantite, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            <button type="button" class="btn btn-danger btn-sm remove-item" data-delete-url="{{ path('app_del_DeamandeDachat', {'id': child.vars.value.id }) }}" data-id="{{ child.vars.value.id }}">
+                Supprimer
+            </button>
+        </li>
+            {% endfor %}
+        </ul>
+        <span></span>
+    </div>
+
+    {# Boutons d'action #}
+    <div class="row" style="margin-left: 700px;">
+        <div class="col-md-3">
+            {{ form_row(form.save, {'label': 'Enregistrer', 'attr': {'value': 'save', 'class': 'btn bt-md btn-success fa fa-save'}}) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.saveAndAdd, {'label': 'Enregistrer ++', 'attr': {'value': 'saveAndAdd', 'class': 'btn btn-success fa fa-save','hidden': 'hidden'}}) }}
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('app_boncommande_index2') }}" class="btn btn-primary fa fa-list">Afficher la liste</a>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+	</div>
+{% endblock %}
+
+	{% block javascripts %}
+		{{ parent() }}
+<script>
+    let collection, boutonAjout, boutonService, span;
+    window.onload = () => {
+        collection = document.querySelector("#detailcommandes");
+        span = collection.querySelector("span");
+
+        // Bouton Ajouter un article
+        boutonAjout = document.createElement("button");
+        boutonAjout.type = "button";
+        boutonAjout.className = "ajout-article btn btn-warning btn-sm ms-2";
+        boutonAjout.innerText = "Ajouter un article";
+
+        // Bouton Ajouter un service
+        boutonService = document.createElement("button");
+        boutonService.type = "button";
+        boutonService.className = "ajout-service btn btn-info btn-sm ms-2";
+        boutonService.innerText = "Ajouter un service";
+
+        // Ajout du bouton de vérification
+        let verifyButton = document.createElement("button");
+        verifyButton.type = "button";
+        verifyButton.className = "btn btn-secondary btn-sm ms-2";
+        verifyButton.innerText = "Recapitulatif";
+        verifyButton.id = "verify-da";
+
+        // Écouteur pour le bouton de vérification
+        span.append(boutonAjout);
+        span.append(boutonService);
+        span.append(verifyButton);
+
+        collection.dataset.index = collection.querySelectorAll("li").length;
+
+        // Événements
+        verifyButton.addEventListener("click", verifyArticles);
+        
+        boutonAjout.addEventListener("click", function() {
+            addDetailCommande('article');
+        });
+
+        boutonService.addEventListener("click", function() {
+            addDetailCommande('service');
+        });
+
+        // Gérer la suppression des éléments existants
+        document.querySelectorAll(".remove-item").forEach(btn => {
+            btn.addEventListener("click", function() {
+                this.closest("li").remove();
+            });
+        });
+    };
+
+    function addDetailCommande(type) {
+        
+        let prototype = collection.dataset.prototype;
+        let index = collection.dataset.index;
+
+        // Remplace __name__ par l'index
+        let newForm = prototype.replace(/__name__/g, index);
+        
+        // Créer un élément temporaire pour parser le HTML
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = newForm;
+        
+        // Récupérer le formulaire
+        let formHtml = tempDiv.firstElementChild;
+        
+        // Modifier la valeur du champ type selon le bouton cliqué
+        let typeInput = formHtml.querySelector('[id$="_type"]');
+        if (typeInput) {
+            typeInput.value = type;
+        }
+
+        // Créer l'élément li
+        let listItem = document.createElement("li");
+        listItem.className = "d-flex align-items-center mb-2";
+        listItem.innerHTML = formHtml.innerHTML;
+
+        // Afficher le bon champ (article ou service)
+        toggleFields(listItem, type);
+
+        // Ajouter le bouton supprimer
+        let boutonSuppr = document.createElement("button");
+        boutonSuppr.type = "button";
+        boutonSuppr.className = "btn btn-danger btn-sm remove-item";
+        boutonSuppr.innerText = "Supprimer";
+        
+        boutonSuppr.addEventListener("click", function() {
+            listItem.remove();
+
+            
+        });
+
+        listItem.appendChild(boutonSuppr);
+        collection.querySelector("ul").appendChild(listItem);
+        collection.dataset.index++;
+    }
+
+    function toggleFields(container, type) {
+        const articleField = container.querySelector('.article-field');
+        const serviceField = container.querySelector('.service-field');
+        
+        if (type === 'article') {
+            if (articleField) articleField.style.display = 'block';
+            if (serviceField) serviceField.style.display = 'none';
+            // Rendre le champ article requis et service non requis
+            const articleSelect = container.querySelector('[name*="[article]"]');
+            const serviceSelect = container.querySelector('[name*="[service]"]');
+            if (articleSelect) articleSelect.required = true;
+            if (serviceSelect) serviceSelect.required = false;
+        } else {
+            if (articleField) articleField.style.display = 'none';
+            if (serviceField) serviceField.style.display = 'block';
+            // Rendre le champ service requis et article non requis
+            const articleSelect = container.querySelector('[name*="[article]"]');
+            const serviceSelect = container.querySelector('[name*="[service]"]');
+            if (articleSelect) articleSelect.required = false;
+            if (serviceSelect) serviceSelect.required = true;
+        }
+    }
+
+    function verifyArticles() {
+    let articles = [];
+    let services = [];
+    
+    $("#detailcommandes li").each(function() {
+        // Vérifier si c'est un article
+        let article = $(this).find(".article-field select").val();
+        let articleQuantite = $(this).find(".article-field").is(":visible") ? $(this).find("[name*='[quantite]']").val() : null;
+        
+        // Vérifier si c'est un service
+        let service = $(this).find(".service-field select").val();
+        let serviceQuantite = $(this).find(".service-field").is(":visible") ? $(this).find("[name*='[quantite]']").val() : null;
+        
+        if (article && $(this).find(".article-field").is(":visible")) {
+            articles.push({
+                article: article,
+                quantite: articleQuantite || 1
+            });
+        }
+        
+        if (service && $(this).find(".service-field").is(":visible")) {
+            services.push({
+                service: service,
+                quantite: serviceQuantite || 1
+            });
+        }
+    });
+
+    if (articles.length === 0 && services.length === 0) {
+        alert("Veuillez ajouter au moins un article ou un service");
+        return;
+    }
+
+    $.ajax({
+        url: "{{ path('verify_DA') }}",
+        type: "POST",
+        dataType: "json",
+        data: JSON.stringify({ 
+            articles: articles,
+            services: services, // Ajout des services
+            _token: "{{ csrf_token('verify_da') }}"
+        }),
+        contentType: "application/json",
+        beforeSend: function() {
+            Swal.fire({
+                title: 'Opérations en cours',
+                html: 'Patientez pendant que nous traitons votre demande ...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        },
+        success: function(response) {
+            Swal.close();
+            
+            if (response.status === 'success') {
+                function formatNumber(num) {
+                    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                }
+
+                response.data.forEach(item => {
+                    item.prixunitaire = formatNumber(item.prixunitaire);
+                    item.quantite = formatNumber(item.quantite);
+                    item.totalprix = formatNumber(item.totalprix);
+                });
+                response.total = formatNumber(response.total);
+
+                // Générer le contenu HTML pour l'affichage
+                let htmlContent = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
+                htmlContent += `
+                    <thead>
+                        <tr>
+                            <th style='text-align:center'>Type</th>
+                            <th style='text-align:center'>Désignation</th>
+                            <th style='text-align:center'>Prix unitaire</th>
+                            <th style='text-align:center'>Quantité</th>
+                            <th style='text-align:center'>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+                response.data.forEach(item => {
+                    htmlContent += `
+                        <tr>
+                            <td>${item.type || 'Article'}</td>
+                            <td>${item.designation || item.article || item.service}</td>
+                            <td>${item.prixunitaire}</td>
+                            <td>${item.quantite}</td>
+                            <td>${item.totalprix}</td>
+                        </tr>`;
+                });
+
+                htmlContent += `
+                    <tr>
+                        <td colspan="4" style="text-align: right;"><strong>Total général</strong></td>
+                        <td>${response.total}</td>
+                    </tr>
+                    </tbody>
+                </table>`;
+                
+                Swal.fire({
+                    title: 'Tableau récapitulatif',
+                    html: htmlContent,
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    width: '800px'
+                });
+            } else {
+                Swal.fire({
+                    title: 'Erreur',
+                    text: response.message || 'Une erreur est survenue',
+                    icon: 'error'
+                });
+            }
+        },
+        error: function(xhr) {
+            Swal.close();
+            let errorMsg = "Erreur de connexion au serveur";
+            
+            try {
+                const jsonResponse = JSON.parse(xhr.responseText);
+                errorMsg = jsonResponse.message || errorMsg;
+            } catch (e) {
+                console.error(e);
+            }
+            
+            Swal.fire({
+                title: 'Erreur',
+                text: errorMsg,
+                icon: 'error'
+            });
+        }
+    });
+}
+
+    // Au chargement, initialiser l'affichage des éléments existants
+    document.querySelectorAll('.detail-commande-item').forEach(item => {
+        const type = item.dataset.type || 'article';
+        toggleFields(item, type);
+    });
+</script>
+	{% endblock %}

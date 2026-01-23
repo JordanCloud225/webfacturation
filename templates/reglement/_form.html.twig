@@ -1,0 +1,209 @@
+<div class="ibox-body">
+
+	{% for label, messages in app.flashes(['success', 'warning']) %}
+		{% for message in messages %}
+			<div class="alert alert-success">
+
+				<div class="text-black">
+					{{ message }}
+				</div>
+
+			</div>
+
+		{% endfor %}
+	{% endfor %}
+	<div class="page-content fade-in-up">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="ibox">
+					<div class="ibox-head">
+						<div class="ibox-title">Details de la  facture
+						</div>
+						<div class="ibox-tools">
+							<a class="ibox-collapse">
+								<i class="fa fa-minus"></i>
+							</a>
+
+						</div>
+					</div>
+					<div class="ibox-body">
+						<form>
+							<div class="row">
+								<div class="col-sm-6 form-group">
+									<label>Numero
+									</label>
+									<b class="form-control">
+										{{ reglement.facture.numfacture  }}
+									</b>
+
+
+								</div>
+								<div class="col-sm-6 form-group">
+									<label>Montant HT</label>
+									<b class="form-control">
+										{{ reglement.facture.montantht  }}
+									</b>
+								</div>
+
+							</div>
+
+							<div class="row">
+
+								<div class="col-sm-6 form-group">
+									<label>Reste
+									</label>
+									<b>
+									<input type="text" id="{{ reglement.facture.reste }}" name="{{ reglement.facture.reste}}" value="{{ reglement.facture.reste }}" readonly class="form-control" ><br><br>
+
+									</b>
+
+
+								</div>
+								<div class="col-sm-6 form-group">
+									<label>Montant payé</label>
+									<b class="form-control">
+										{{ reglement.facture.montantpaye  }}
+									</b>
+
+								</div>
+
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-6 form-group">
+									<label>Montant Remise
+									</label>
+									<b class="form-control">
+										{{ reglement.facture.montantremise }}
+									</b>
+
+
+								</div>
+								<div class="col-sm-6 form-group">
+									<label>Montant TVA</label>
+									<span class="form-control">
+										{{ reglement.facture.tva  }}
+									</span>
+								</div>
+							</div>
+							<div class="row">
+
+
+								<div class="col-sm-6 form-group">
+									<label>Montant TTC
+									</label>
+
+									<input type="text" id="{{ reglement.facture.netpayee }}" name="{{ reglement.facture.netpayee }}" value="{{ reglement.facture.netpayee }}" readonly class="form-control"><br><br>
+
+
+								</div>
+								<div class="col-sm-6 form-group">
+									<label>Client</label>
+									<b class="form-control">
+										{{ reglement.facture.boncommande.client.libelle }}
+									</b>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label>Contact Client</label>
+									<b class="form-control">
+										{{ reglement.facture.boncommande.client.contact1 }}
+									</b>
+
+								</div>
+								<div class="col-sm-6 form-group">
+									<label>Date edition</label>
+									<b class="form-control">
+										{{ reglement.facture.datefacture|date('d-m-Y') }}
+									</b>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="ibox">
+					<div class="ibox-head">
+						<div class="ibox-title">Reglement</div>
+						<div class="ibox-tools">
+							<a class="ibox-collapse">
+								<i class="fa fa-minus"></i>
+							</a>
+							<a class="fullscreen-link">
+								<i class="fa fa-expand"></i>
+							</a>
+						</div>
+					</div>
+					<div class="ibox-body">
+						{{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label">Montant versé</label>
+							<div class="col-sm-10">
+								{{ form_widget(form.montantverse, { 'attr': {'class':'form-control', 'onchange' :'compareNumbers()'} }) }}
+							</div>
+						</div>	<div class="form-group row">
+							<label class="col-sm-2 col-form-label">Mode paiement</label>
+							<div class="col-sm-10">
+								{{ form_widget(form.mode, { 'attr': {'class':'form-control'} }) }}
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label">Date</label>
+							<div class="col-sm-10">
+								{{ form_widget(form.datereglement, {'attr':{'class':'form-control'}}) }}
+							</div>
+						</div>
+
+						<div class="row">
+
+							{% if reglement.facture.reste == 0 %}
+								<div class="col-sm-3">
+									<a href="{{ path('app_reglement_index') }}">
+										<span class="btn btn-success">Annuler</span>
+									</a>
+
+								</div>
+									<div  class="col-sm-10" style="visibility: hidden;">>
+
+
+									{{ form_row(form.save, {'label':'Payer ','attr':{'value':'save', 'class':'btn btn-info'}}) }}
+								</div>
+
+							{% else %}
+
+								<div class="col-sm-2">
+
+
+									{{ form_row(form.save, {'label':'Payer ','attr':{'value':'save', 'class':'btn btn-info', 'onclick' :'compareNumbers()'}}) }}
+								</div>
+								<div class="col-sm-3">
+									<a href="{{ path('app_reglement_index') }}">
+										<span class="btn btn-success">Annuler</span>
+									</a>
+
+								</div>
+
+							</div>
+						{% endif %}
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-10" style="visibility: hidden;">
+			{{ form_widget(form.facture, {'attr':{'class':'form-control'}}) }}
+		</div>	
+		<div class="col-sm-10" style="visibility: hidden;">
+			{{ form_widget(form.montant, {'attr':{'class':'form-control'}}) }}
+		</div>
+			<div class="col-sm-10" style="visibility: hidden;">
+			{{ form_widget(form.reste, {'attr':{'class':'form-control'}}) }}
+		</div>
+
+
+		{{ form_end(form) }}
+	</div>
+</div>

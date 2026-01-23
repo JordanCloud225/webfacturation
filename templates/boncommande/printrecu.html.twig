@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Impression Recu paiement</title>
+
+		<style type="text/css">
+			* {
+				font-family: Verdana, Arial, sans-serif;
+			}
+			table {
+				font-size: x-small;
+			}
+			tfoot tr td {
+				font-weight: bold;
+				font-size: x-small;
+			}
+
+			.gray {
+				background-color: lightgray
+			}
+			  span {  font-size: 10pt;  }
+		</style>
+		<style>
+			footer {
+				position: fixed;
+				bottom: -60px;
+				left: 0;
+				right: 0;
+				height: 60px;
+				 font-size: x-small; 
+				/** Extra personal styles **/
+
+				color: black;
+				text-align: center;
+				line-height: 15px;
+			}
+			
+		</style>
+	</head>
+	<body>
+
+		<table width="100%">
+			<tr>
+				<td valign="top"><img src="{{ base64(absolute_url(asset('uploads/brochures/'~entreprise.brochureFilename ))) }}" style="img { border: 1px solid #ddd; }" alt="logo"></td>
+				<td align="right">
+					<h3>{{ entreprise.libelle }}</h3>
+					<pre>
+                {{ entreprise.competance }}
+               <b> Payment receipt</b>
+               
+            </pre>
+				</td>
+			</tr>
+
+		</table>
+
+		<table width="100%">
+			<tr>
+				<td>
+					<strong>Invoice  N&deg;:</strong>
+					<strong>
+						{{ detailreglement.reglement.facture.boncommande.codecommande }}-{{ detailreglement.reglement.facture.boncommande.client.libelle }}
+					</strong>
+				</td>
+
+			</tr>
+			<tr>
+				<td>
+					<strong>Job Title : </strong>
+					{{ detailreglement.reglement.facture.boncommande.jobtitle }}
+				</td>
+				<td>
+				<strong>Date paiement:</strong>
+					{{ detailreglement.datepaiement|date('d-m-Y') }}
+				
+				</td>
+				</tr>
+				<tr>
+					<strong>Po : </strong>
+					{{ detailreglement.reglement.facture.boncommande.po }}
+			
+			</tr>
+			<tr>
+			
+
+			</tr>
+			<tr>
+					<td>
+					<strong>Job site Loc.</strong>
+					{{ detailreglement.reglement.facture.boncommande.sitelocation }}
+				</td>
+			</tr>
+
+		</table>
+		<br/>
+
+	<table width="100%"  style="border: 3px solid black;  border-collapse: collapse;">
+			<tr>
+				<td width="50%"  style="border: 3px solid black;  border-collapse: collapse;" >
+					<strong>{{ entreprise.libelle }}</strong>
+
+					<br/>
+					Adresse :
+					{{ entreprise.adresse }}<br/>
+					Contact:
+					{{ entreprise.contact1 }}<br/>
+					Mail :{{ entreprise.email }}<br/>
+					VAT Reg No :{{ entreprise.numtva }}</td>
+				<td width="50%">
+					<strong>To:
+						{{ detailreglement.reglement.facture.boncommande.client.libelle }}</strong>
+					<br/>
+					Adresse :
+					{{ detailreglement.reglement.facture.boncommande.client.adresse }}<br/>
+					Contact:
+					{{ detailreglement.reglement.facture.boncommande.client.contact1 }}<br/>
+					Mail :{{ detailreglement.reglement.facture.boncommande.client.email }}<br/>
+					VAT Reg No :{{ detailreglement.reglement.facture.boncommande.client.numtv }}</td>
+			</tr>
+		</table><br/>
+		<table width="100%">
+			<thead style="background-color: lightgray;">
+				<tr>
+		
+				<th> Facture</th>
+				<th>Client</th>
+				<th>Contact client</th>
+				<th>Montant HT</th>
+				<th>Montant remise</th>
+				<th>Montant TVA</th>
+				<th>Montant TTC</th>
+				<th>Montnt payé</th>
+				<th>Reste</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			
+
+					<tr>
+					
+						<td align="center">{{ detailreglement.reglement.facture.numfacture }}</td>
+						<td align="center">{{ detailreglement.reglement.facture.boncommande.client.libelle }}</td>
+						<td align="center">{{ detailreglement.reglement.facture.boncommande.client.contact1 }}</td>
+						<td align="center">{{ detailreglement.reglement.facture.montantht|number_format(2, '.', ' ') }}</td>
+						<td align="center">{{ detailreglement.reglement.facture.montantremise|number_format(2, '.', ' ') }}</td>
+						<td align="center">{{ detailreglement.reglement.facture.tva|number_format(2, '.', ' ') }}</td>
+						<td align="center">{{ detailreglement.reglement.facture.netpayee|number_format(2, '.', ' ') }}</td>
+						<td align="center">{{ detailreglement.montantpaye|number_format(2, '.', ' ') }}</td>
+						<td align="center">{{ detailreglement.reste|number_format(2, '.', ' ') }}</td>
+
+					</tr>
+			
+			</tbody>
+			
+		</table
+		>
+		<hr style="visibility: hidden;">
+	<span>
+	{% set a = detailreglement.montantpaye %}
+	{% set c = detailreglement.reste %}
+	{% set d = c / 655.955 %}
+	{% set b = a / 655.955 %}
+			
+			Montant Pay&eacute; :	<b> {{  detailreglement.montantpaye|number_format(2, '.', ' ')  }} XOF -- {{  b|number_format(2, '.', ' ') }} EURO</b> <br>
+
+			Reste: <b> {{  detailreglement.reste|number_format(2, '.', ' ')  }} XOF -- {{  d|number_format(2, '.', ' ') }} EURO</b>
+	</span>
+			
+	
+		<footer>Si&egrave;ge social:{{ entreprise.ville }},{{ entreprise.adresse }}, RCCM: {{ entreprise.codenaf }}, Banque:{{ entreprise.siren }},
+		Contact:{{ entreprise.contact1 }}, Email:{{ entreprise.email }}, Site Internet:{{ entreprise.siteweb }}</footer>
+	</body>
+</html>

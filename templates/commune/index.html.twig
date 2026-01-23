@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commune index{% endblock %}
+
+{% block body %}
+    <h1>Commune index</h1>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>DeletedAt</th>
+                <th>CreatedBy</th>
+                <th>UpdatedBy</th>
+                <th>DeletedBy</th>
+             
+                <th>UpdatedFromIp</th>
+                <th>CreatedFromIp</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commune in communes %}
+            <tr>
+                <td>{{ commune.id }}</td>
+                <td>{{ commune.libelle }}</td>
+                <td>{{ commune.createdAt ? commune.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ commune.updatedAt ? commune.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ commune.deletedAt ? commune.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ commune.createdBy }}</td>
+                <td>{{ commune.updatedBy }}</td>
+                <td>{{ commune.deletedBy }}</td>
+              
+                <td>{{ commune.updatedFromIp }}</td>
+                <td>{{ commune.createdFromIp }}</td>
+                <td>
+                    <a href="{{ path('app_commune_show', {'id': commune.id}) }}">show</a>
+                    <a href="{{ path('app_commune_edit', {'id': commune.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_commune_new') }}">Create new</a>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+
+<script language="javascript">
+var myModal = document.getElementById('myModal')
+var myInput = document.getElementById('myInput')
+
+myModal.addEventListener('shown.bs.modal', function () {
+  myInput.focus()
+})
+</script>
+{% endblock %}

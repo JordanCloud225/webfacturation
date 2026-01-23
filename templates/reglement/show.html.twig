@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reglement{% endblock %}
+
+{% block body %}
+    <h1>Reglement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ reglement.id }}</td>
+            </tr>
+            <tr>
+                <th>Montantpayee</th>
+                <td>{{ reglement.montantpayee }}</td>
+            </tr>
+            <tr>
+                <th>Reste</th>
+                <td>{{ reglement.reste }}</td>
+            </tr>
+            <tr>
+                <th>Identreprise</th>
+                <td>{{ reglement.identreprise }}</td>
+            </tr>
+            <tr>
+                <th>Datergement</th>
+                <td>{{ reglement.datergement ? reglement.datergement|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ reglement.createdAt ? reglement.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ reglement.updatedAt ? reglement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ reglement.deletedAt ? reglement.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ reglement.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ reglement.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>DeletedBy</th>
+                <td>{{ reglement.deletedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reglement_index') }}">back to list</a>
+
+    <a href="{{ path('app_reglement_edit', {'id': reglement.id}) }}">edit</a>
+
+    {{ include('reglement/_delete_form.html.twig') }}
+{% endblock %}

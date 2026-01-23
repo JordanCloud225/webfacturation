@@ -1,0 +1,33 @@
+{% block title %}Nouveau mot de passe{% endblock %}  
+
+{% block body %}  
+<div class="container d-flex justify-content-center align-items-center vh-100">  
+    <div class="card shadow p-4" style="width: 400px;">  
+        <h2 class="text-center">Nouveau mot de passe</h2>  
+
+        {% if resetToken is not null %}  
+            {{ form_start(resetForm) }}  
+                <div class="mb-3">  
+                    <label class="form-label">Nouveau mot de passe</label>  
+                    <div class="input-group">  
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>  
+                        {{ form_widget(resetForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Votre nouveau mot de passe'}}) }}  
+                    </div>  
+                </div>  
+
+                <button class="btn btn-primary w-100">Réinitialiser</button>  
+            {{ form_end(resetForm) }}  
+        {% else %}  
+            <p>Il y a eu un problème avec le lien de réinitialisation. Veuillez vérifier votre email ou contacter le support.</p>  
+            <p class="text-center">  
+                <a href="{{ path('app_login') }}" class="text-decoration-none">Retour à la connexion</a>  
+            </p>  
+        {% endif %}  
+
+        <hr>  
+        <p class="text-center">  
+            <a href="{{ path('app_login') }}" class="text-decoration-none">Retour à la connexion</a>  
+        </p>  
+    </div>  
+</div>  
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture definitive
+{% endblock %}
+
+{% block body %}
+	<div class="ibox-body">
+		<div class="ibox">
+
+			{{ form_start(form) }}
+
+			{% for label, messages in app.flashes(['success', 'warning']) %}
+				{% for message in messages %}
+					<div class="alert alert-success">
+
+						<div class="text-black">
+							{{ message }}
+						</div>
+
+					</div>
+
+				{% endfor %}
+			{% endfor %}
+			<div class="ibox">
+				<div class="ibox-head">
+					<div class="ibox-title">
+						<h1>Conversion du bon en facture definitive</h1>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="client">Client
+						</label>
+						{{ form_widget(form.client, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="datecommande">Date
+						</label>
+						{{ form_widget(form.datecommande, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="po">PO
+						</label>
+						{{ form_widget(form.po, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+
+
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="jobtitle">Job Title
+						</label>
+						{{ form_widget(form.jobtitle, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="sitelocation"> Job Site Location
+						</label>
+						{{ form_widget(form.sitelocation, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="sitelocation"> TVA
+						</label>
+						{{ form_widget(form.type, {'attr':{'class':'form-control input'}}) }}
+
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="montantremise">Montant remise
+						</label>
+						<input class="form-control" type="text" readonly placeholder="Montant HT " value="{{boncommande.montantremise}}" name="boncommande.ttc" id="boncommande.ttc">
+						{# {{ form_widget(form.montantremise, {'attr':{'class':'form-control input'}}) }} #}
+
+					</div>
+
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="tva">Montant
+						</label>
+						<input class="form-control" type="text" readonly placeholder="Montant HT " value="{{boncommande.ttc}}" name="boncommande.ttc" id="boncommande.ttc">
+
+						<br>
+					</div>
+					<div class="form-group col-sm-3">
+						<label class="text-size" id="tva">Montant TVA
+						</label>
+						<input class="form-control" type="text" readonly placeholder="Montant TVA " value="{{boncommande.tva}}" name="boncommande.tva" id="boncommande.tva">
+
+						<br>
+					</div>
+
+					{# <div class="form-group col-sm-3">
+						<label class="text-size" id="type">Appliquer TVA ?
+						</label>
+						{{ form_widget(form.type, {'attr':{'class':'form-control'}}) }}
+						<br>
+					</div> #}
+
+
+				</div>
+
+				{# <div id="detailcommandes" data-prototype="{{ form_row(form.detailcommandes.vars.prototype)|e('html_attr') }}" class="form-group col-sm-3">
+					{{ form_row(form.detailcommandes) }}
+					<span></span>
+				</div> #}
+
+
+				<div class="row">
+					<div class="col-md-6">
+						{{ form_row(form.save, {'label':'Enregistrer ','attr':{'value':'save', 'class':'btn bt-md btn-success fa fa-save'}}) }}</div>
+					<div class="col-md-3">
+						<a href="{{ path('app_boncommande_proforma') }}" class="btn btn-primary fa fa-list">Retour à la liste</a>
+					</div>
+
+				</div>
+				{{ form_end(form) }}
+
+
+			</div>
+		</div>
+		</div>
+
+	{% endblock %}
+
+	{% block javascripts %}
+		{{ parent() }}
+		 <script>
+							        let collection, boutonAjout, span;
+							        window.onload = () => {
+							            collection = document.querySelector("#detailcommandes");
+							            span = collection.querySelector("span");
+							
+							            boutonAjout = document.createElement("button");
+							            boutonAjout.className = "ajout-detailcommande btn primary";
+							            boutonAjout.innerText = "Ajouter un article";
+							
+							            let nouveauBouton = span.append(boutonAjout);
+							
+							            collection.dataset.index = collection.querySelectorAll("input").length;
+							
+							            boutonAjout.addEventListener("click", function(){
+							                addButton(collection, nouveauBouton);
+							            });
+							        }
+							
+							        function addButton(collection, nouveauBouton){
+							            let prototype = collection.dataset.prototype;
+							
+							            let index = collection.dataset.index;
+							
+							            prototype = prototype.replace(/__name__/g, index);
+							
+							            let content = document.createElement("html");
+							            content.innerHTML = prototype;
+							            let newForm = content.querySelector("div");
+							
+							            let boutonSuppr = document.createElement("button");
+							            boutonSuppr.type = "button";
+							            boutonSuppr.className = "btn red";
+							            boutonSuppr.id = "delete-detailcommande-" + index;
+							            boutonSuppr.innerText = "Supprimer cet article";
+							
+							            newForm.append(boutonSuppr);
+							
+							            collection.dataset.index++;
+							
+							            let boutonAjout = collection.querySelector(".ajout-detailcommande");
+							
+							            span.insertBefore(newForm, boutonAjout);
+							
+							            boutonSuppr.addEventListener("click", function(){
+							                this.previousElementSibling.parentElement.remove();
+							            })
+							        }
+							
+							    </script>
+	{% endblock %}

@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Factures
+{% endblock %}
+
+{% block body %}
+	{% for label, messages in app.flashes(['success', 'warning']) %}
+		{% for message in messages %}
+			<div class="alert alert-success">
+
+				<div class="text-black">
+					{{ message }}
+				</div>
+
+			</div>
+
+		{% endfor %}
+	{% endfor %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form method="post" action="{{ path('app_boncommande_delete') }}" id="form-delete">
+						<div class="modal-body container">
+
+							<div class="form-group col-md-12 col-sm-12">
+								<input type="hidden" class="form-control p-3" id="id-delete" name="id-delete" placeholder="id commune">
+							</div>
+							<div class="modal-body">
+								<h2 class="fs-5">Voulez-vous effectuer cette suppression ?</h2>
+
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="reset" class="btn btn-success" data-bs-dismiss="modal">Non</button>
+							<button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Oui</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<h1>Liste Factures
+	</h1>
+	<p class="mb-2">
+	
+		<a href="{{ path('app_boncommande_index') }}">
+			<button class="btn btn-success">
+				<i class="fa fa-list"></i>
+				Bons de commande</button>
+		</a>
+		   <a href="{{ path('app_reglement_index') }}"><button class="btn btn-danger"><i class="fa fa-list"></i> Reglement Factures</button></a>
+
+	</p>
+	<table id="example-table" class="table table-sm table-bordered table-striped table-hover display" style="width:100%">
+		<thead class="bg-primary text-white text-bold">
+			<tr>
+
+				<th>Date edition</th>
+				<th>Code Facture</th>
+				<th>Client</th>
+				<th>PO</th>
+				<th>Jobt Title</th>
+				<th>Site Location</th>
+				<th>Montant remise</th>
+				<th>Tva</th>
+				<th>Montant HT</th>
+				<th>Net à payer</th>
+				<th>Montant payé</th>
+				<th>Reste à payer</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+
+	</table>
+
+
+{% endblock %}
+{% block javascripts %}  
+{{ parent() }}  
+<script type="text/javascript">  
+
+    function iniTable() {  
+        $('#example-table').DataTable({  
+            select: true,  
+            ordering: true,  
+            paging: true,  
+            responsive: true,  
+            processing: true,  
+            serverSide: true,  
+            searching: true,  
+            ajax: {  
+                url: '{{ path("facture_lister") }}',  
+                type: 'GET',  
+            },   
+            columns: [  
+                { data: 'datefacture' },  
+                { data: 'numfacture' },  
+                { data: 'boncommande.client.libelle' },  
+                { data: 'po' },  
+                { data: 'jobtitle' },  
+                { data: 'sitelocation' },  
+                { data: 'montantremise' },  
+                { data: 'tva' },  
+                { data: 'montantht' },  
+                { data: 'netpayee' },  
+                { data: 'montantpaye' },  
+                { data: 'reste' },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function (data, type, row) {
+                        let url = '{{ path("app_boncommande_facture_print", {"id": "__ID__"}) }}'.replace('__ID__', row.id);
+                        return `<a href="${url}" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-print"></i> Imprimer</a>`;
+                    }
+                }
+            ],  
+            columnDefs: [],  
+            layout: {  
+                topStart: {  
+                    pageLength: {  
+                        menu: [5, 10, 25, 50, 100]  
+                    },  
+                    buttons: {  
+                        buttons: [  
+                            'copy',  
+                            'excel',  
+                            'pdf',    
+                            'colvis'  
+                        ]  
+                    }  
+                }  
+            },  
+            language: {  
+                url: '{{ asset("DataTables/fr-FR.json") }}',  
+            }  
+        });  
+
+        const alerts = document.querySelectorAll('[class*="alert-"]');  
+        for (const alert of alerts) {  
+            setTimeout(function() {  
+                const bootstrapAlert = bootstrap.Alert.getOrCreateInstance(alert);  
+                bootstrapAlert.close();  
+            }, 3000);  
+        }  
+    }  
+
+    $(document).ready(function(){  
+        iniTable();  
+    });  
+</script>  
+{% endblock %}  

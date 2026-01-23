@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Detailreglement{% endblock %}
+
+{% block body %}
+    <h1>Create new Detailreglement</h1>
+
+    {{ include('detailreglement/_form.html.twig') }}
+
+    <a href="{{ path('app_detailreglement_index') }}">back to list</a>
+{% endblock %}

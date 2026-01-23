@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+		<meta name="description" content=""/>
+		<meta name="author" content=""/>
+		<title>GESTION - FACTURE</title>
+		<link
+		rel="stylesheet" href="{{ asset('dist/css/styles.css') }}">
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+	</head>
+	<body class="bg-primary">
+		<div id="layoutAuthentication">
+			<div id="layoutAuthentication_content">
+				<main>
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-lg-9">
+								<div class="card shadow-lg border-0 rounded-lg mt-5">
+									<div class="card-header">
+										<h3 class="text-center font-weight-light my-4">Creation de compte</h3>
+									</div>
+									<div class="card-body">
+
+
+										{{ form_start(form) }}
+										<div class="my-custom-class-for-errors">
+											{{ form_errors(form) }}
+											{% for message in app.flashes('message') %}
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+														<div class="alert alert-success alert-dismissible">
+															<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+															<strong>Succès!</strong>
+															{{ message }}
+
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+
+										</div>
+
+
+										<fieldset>
+
+
+											<div class="card mb-3" style="border:5px solid #1c7430;border-color: #1c7430;">
+												<div class="card-header" style="background-color: #1c7430;color: white;font-size: medium;font-weight: bold;">Donn&eacute;es Entreprise</div>
+												<div class="card-body" style="font-weight: bold;color: black;">
+
+
+													<div class="row">
+
+														<div class="col-md-4">
+															{{ form_row(form.libelle, {'label':'Structure * ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.siren, {'label':'Banque','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.codenaf, {'label':'RCCM','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.numtva, {'label':'N° TVA ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.adresse, {'label':'Adresse* ','attr':{'class':'form-control'}}) }}
+														</div>	<div class="col-md-4">
+															{{ form_row(form.competance, {'label':'Activités principales ','attr':{'class':'form-control'}}) }}
+														</div>
+
+														<div class="col-md-4">
+															{{ form_row(form.ville, {'label':'Siège ','attr':{'class':'form-control'}}) }}
+														</div>
+
+														<div class="col-md-4">
+															{{ form_row(form.pays, {'label':'Pays * ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.contact1, {'label':'Contact entreprise* ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.contact2, {'label':'Contact entreprise 2 ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.codepostal, {'label':'Code postal ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.langue, {'label':'Langue *  ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.siteweb, {'label':'Site Internet ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.email1, {'label':'Email entreprise ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.complementadresse, {'label':'Complement adresse ','attr':{'class':'form-control'}}) }}
+														</div>
+															<div class="col-md-4">
+															{{ form_row(form.sigle, {'label':'Abreviation ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+														{{ form_row(form.brochure2, {'label':'Logo  ','attr':{'class':'form-control'}}) }}
+													</div>
+
+
+												</div>
+												<div class="card-header" style="background-color: #1c7430;color: white;font-size: medium;font-weight: bold;">Donn&eacute;es Administrateur</div>
+												<div class="card-body" style="font-weight: bold;color: black;">
+
+
+													<div class="row">
+
+														<div class="col-md-4">
+															{{ form_row(form.nom, {'label':'Nom * ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.contact, {'label':'N° Téléphone * ','attr':{'class':'form-control'}}) }}
+														</div>
+
+														<div class="col-md-4">
+															{{ form_row(form.email, {'label':'EMail * ','attr':{'class':'form-control'}}) }}
+														</div>
+														<div class="col-md-4">
+															{{ form_row(form.plainPassword, {'label':'Mot de passe * ','attr':{'class':'form-control'}}) }}
+														</div>
+													
+														<div class="col-md-4">
+															{{ form_row(form.brochure, {'label':'Photo profile  ','attr':{'class':'form-control'}}) }}
+														</div>
+													</div>
+													<div style="display: none">
+														{{ form_row(form.roles, {'label':' * '}) }}
+													</div>
+												</div>
+												<div class="col-md-4">
+													{{ form_row(form.agreeTerms, {'label':'Acceptez-vous les conditions  '}) }}
+												</div>
+												<br/>
+												<div class="col-md-4">
+													<button class="btn btn-success">{{ button_label|default('Valider') }}</button>
+												</div>
+											</div>
+
+
+										</fieldset>
+
+
+										{{ form_end(form) }}
+
+
+									</div>
+									<div class="card-footer text-center py-3">
+										<div class="small">
+											<a href="{{ path('app_login') }}">Deja inscrit ? Connexion</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</main>
+			</div>
+			<div id="layoutAuthentication_footer">
+				<footer class="py-4 bg-light mt-auto">
+					<div class="container-fluid px-4">
+						<div class="d-flex align-items-center justify-content-between small">
+							<div class="text-muted">Copyright &copy; SOCAF 2020</div>
+							<div>
+								<a href="#">SOCAF</a>
+								&middot;
+								<a href="#">Terms &amp; Conditions</a>
+							</div>
+						</div>
+					</div>
+				</footer>
+			</div>
+		</div>
+		{% block javascripts %}
+			{% block importmap %}
+				{{ importmap('app') }}
+			{% endblock %}
+
+			 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+			 <script src="{{ asset('src/js/scripts.js') }}"></script>
+
+		{% endblock %}
+	</body>
+</html>

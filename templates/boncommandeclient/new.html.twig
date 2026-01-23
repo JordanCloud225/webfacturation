@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Bon Commande Client{% endblock %}
+
+{% block body %}
+  <div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <h1>Création Bon Commande Client</h1>
+        </div>
+    </div>
+
+    {{ include('boncommandeclient/_form.html.twig') }}
+
+  </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <h1>User index</h1>
+
+    <table class="example-table">
+        <thead>
+            <tr>
+
+                <th>Nom</th>
+                <th>Photo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+
+                    <td>{{ user.nom }}</td>
+                    <td>
+                        {% if user.brochureFilename is not empty %}
+                            <img src="{{ asset('uploads/brochures/'~user.brochureFilename )}}"    class="rounded-circle img-fluid" style="width: 150px;"/>  
+                        {% else %} {% endif %}
+                    </td>
+                   
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_register') }}">Create new</a>
+{% endblock %}

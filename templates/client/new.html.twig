@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Client{% endblock %}
+
+{% block body %}
+  <div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <h1>Création Client</h1>
+        </div>
+    </div>
+
+    {{ include('client/_form.html.twig') }}
+
+  </div>
+{% endblock %}

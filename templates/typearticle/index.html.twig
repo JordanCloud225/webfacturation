@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Type Article Liste{% endblock %}
+
+{% block body %}
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+
+                    <div class="text-black">
+                        {{ message }}
+                    </div>
+
+            </div>
+
+        {% endfor %}
+    {% endfor %}
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form method="post" action="{{ path('app_typearticle_delete') }}" id="form-delete">
+						<div class="modal-body container">
+
+							<div class="form-group col-md-12 col-sm-12">
+								<input type="hidden" class="form-control p-3" id="id-delete" name="id-delete" placeholder="id commune">
+							</div>
+							<div class="modal-body">
+								<h2 class="fs-5">Voulez-vous effectuer cette suppression ?</h2>
+																				
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="reset" class="btn btn-success" data-bs-dismiss="modal">Non</button>
+							<button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Oui</button>
+						</div>
+					</form>
+				</div>
+			
+			</div>
+		</div>
+	</div>
+
+
+    <h1>Liste Type Article </h1>
+ <p class="mb-2"><a href="{{ path('app_typearticle_new') }}"><button class="btn btn-info"><i class="fa fa-list"></i> Nouveau</button></a></p>
+    <table id="example-table" class="table table-sm table-bordered table-striped table-hover display" style="width:100%">
+        <thead class="bg-primary text-white text-bold">
+            <tr>
+                <th> Libellé </th>
+                <th data-formater="">Action</th>
+            </tr>
+        </thead>
+{#        <tbody>#}
+{#        {% for typearticle in typearticlex %}#}
+{#            <tr>#}
+{#                <td>{{ typearticle.libelletypearticle }}</td>#}
+{#                <td>#}
+{#                    <a href="{{ path('app_typearticle_edit', {'id': typearticle.id}) }}" title="Modifier"><button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button></a>#}
+{#                    <a href="{{ path('app_typearticle_show', {'id': typearticle.id}) }}" title="Supprimer"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></a>onclick="return confirm('Are you sure you want to delete this item?');"#}
+{#                    <a href="{{ path('app_typearticle_delete', {'id': typearticle.id}) }}"  title="Supprimer">#}
+{#                        <button id="delete-row" onClick="javascript:deleteRow({{ typearticle.id }})" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop-delete">#}
+{#                            <i class="fa fa-trash"></i>#}
+{#                        </button>#}
+{#                    </a>#}
+
+{#                </td>#}
+{#            </tr>#}
+
+{#        {% endfor %}#}
+{#        </tbody>#}
+    </table>
+
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+<script type="text/javascript">
+
+    function deleteRow(value, libelle){
+
+        $('#id-delete').val(value)
+    }
+
+    function updateRow(value){
+
+         var url = window.location.href+ value+"/edit"
+        document.location.href=url
+    }
+    function iniTable(){
+        $('#example-table').DataTable({
+            select: true,
+            ordering: true,
+            paging: true,
+            processing: true,
+            serverSide: true,
+            searching: true,
+            ajax: {
+                url: '{{ path("typearticle_lister") }}',
+                type: 'GET',
+
+            },
+            columns: [
+                { data: 'libellefr' },
+                // { data: 'salary' },
+                // { data: 'office' }
+            ],
+            columnDefs: [
+                {
+                    targets: 1,
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+	                        return '<button class="update btn btn-success" onClick="javascript:updateRow('+ data + ')" title="Modifier"><i class="fa fa-edit"></i></button>\n\
+	                <button class="btn btn-danger" onClick="javascript:deleteRow('+ data + ')" title="Supprimer" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-trash"></i></button>';
+	                    }
+                }
+            ],
+            layout: {
+                topStart: {
+                    pageLength: {
+                        menu: [5, 10, 25, 50, 100]
+                    },
+                    buttons: {
+                        buttons:['copy','excel', 'pdf','colvis']
+                    }
+
+                }
+            },
+            language: {
+                url: '{{ asset("DataTables/fr-FR.json") }}',
+            }
+        });
+        // $('#example-table-table-table').on( 'draw.dt', function () {
+        //     $('#example-table-table-table').ajax.reload();
+        //     console.log('load')
+        // } );
+
+        const alerts = document.querySelectorAll('[class*="alert-"]')
+        for (const alert of alerts) {
+            setTimeout( function() {
+                const bootstrapAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bootstrapAlert.close();
+            }, 3000);
+        }
+
+  
+    }
+
+
+        $(document).ready(function(){
+            iniTable()
+
+        });
+</script>
+{% endblock %}

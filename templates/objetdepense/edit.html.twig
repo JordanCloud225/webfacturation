@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Objetdepense{% endblock %}
+
+{% block body %}
+    <div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <h1>Modification objet depense</h1>
+        </div>
+    </div>
+
+    {{ include('objetdepense/_form.html.twig', {'button_label': 'Update'}) }}
+
+    </div>
+{% endblock %}

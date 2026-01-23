@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Impression Bon de commande</title>
+
+		<style type="text/css">
+			* {
+				font-family: Verdana, Arial, sans-serif;
+			}
+			table {
+				font-size: x-small;
+			}
+			tfoot tr td {
+				font-weight: bold;
+				font-size: x-small;
+			}
+
+			.gray {
+				background-color: lightgray
+			}
+			.you {
+				style="border: 2px solid black; border-collapse: collapse;"
+			}
+			span {
+				font-size: 10pt;
+			}
+			.entete {
+				border: 2px solid black;
+				border-collapse: collapse;
+				padding: 10px auto;
+			}
+			.total {
+				border: 2px solid black;
+				border-collapse: collapse;
+				padding: 25px auto;
+				font-size: 13pt;
+			}
+			.ligne {
+				padding: 3px auto;
+				border-right: 2px solid black;
+				border-collapse: collapse;
+			}
+			.bordure {
+				border: 3px solid black;
+				border-collapse: collapse;
+			}
+			.tete {
+				text-transform: capitalize;
+				font-weight: bold;
+			}
+			.corps {
+				text-transform: capitalize;
+				font-style: italic; 
+				color : black;
+			}
+			.direction {
+				font-weight: bold;
+				font-size: 10pt;
+				text-decoration: underline;
+			}
+		</style>
+		<style>
+			footer {
+				position: fixed;
+				bottom: -60px;
+				left: 0;
+				right: 0;
+				height: 60px;
+				font-size: x-small;
+				/** Extra personal styles **/
+
+				color: black;
+				text-align: center;
+				line-height: 15px;
+	   
+               before { content: counter(page); }
+			}
+		</style>
+	</head>
+	<body>
+
+		<table width="100%">
+			<tr>
+				{% if header == 'true' %}
+					<td valign="top"><img src="{{ base64(absolute_url(asset('uploads/brochures/header.png' ))) }}" style="img {  border: 1px solid #ddd; border-radius: 4px;  margin: -40px 0 0 -20px ;  width:750px; }" alt="logo">
+				</td>
+				{% elseif header == 'false' %}
+					<br><br><br>
+				{% endif %}
+			</tr>
+		</table>
+
+		<table width="100%">
+			<tr>
+				<td>
+				</td>
+				<td align="right">
+					{{ entreprise.ville }}, {{ boncommandes.dateproforma|format_datetime('full', 'none', locale: 'fr') }}
+				</td>
+			</tr>
+		</table>
+	<br>
+		<table width="85%" style="margin: 0 0 0 50px;">
+			<tr>
+				<td class="tete" >{{ entreprise.libelle }}</td>
+				<td align="right" class="tete">{{ boncommandes.client.libelle }}</td>
+			</tr>
+			<tr>
+				<td class="corps">{{ entreprise.adresse }}</td>
+				<td class="corps" align="right">{{ boncommandes.client ? boncommandes.client.adresse }}</td>
+			</tr>
+			<tr>
+				<td class="corps">{{ entreprise.contact1 }} / {{  entreprise.contact2 }}</td>
+				<td class="corps" align="right">{{ boncommandes.client ? boncommandes.client.contact1 }} / {{ boncommandes.client ? boncommandes.client.contact2 }}</td>
+			</tr>
+			<tr>
+				<td class="corps">{{ entreprise.email }} </td>
+				<td class="corps" align="right">{{ boncommandes.client ? boncommandes.client.email }}</td>
+			</tr>
+			<tr>
+				<td class="tete">Objet</td>
+				<td class="tete" align="right">Adresse de livraison</td>
+			</tr>
+			<tr>
+				<td class="corps">{{ boncommandes.jobtitle }}</td>
+				<td class="corps" align="right">{{ boncommandes.sitelocation }}</td>
+			</tr>
+		</table>
+		<br/>
+		<table width="100%" style="border-collapse: collapse;">
+			<thead >
+				<tr class="entete">
+					<th class="entete" width="350px">DESIGNATION</th>
+					<th class="entete" width="60px">QUANTITE</th>
+					<th class="entete" width="105px">U.P XOF</th>
+					<th class="entete" width="105px">Total XOF</th>
+				</tr>
+			</thead>
+			<tbody style="border: 2px solid black; border-collapse: collapse;">
+				{% set count = 0 %}{% set prixtotal = 0 %}
+				{% for detailcommande in boncommandes.detailcommandes %}
+					{% set prixunitaire = detailcommande.prixunitaire %}
+					{% set prixunitaireuro = prixunitaire / 655.955 %}
+					{% set qte = detailcommande.quantite %}
+					{% set count = count + 1 %}
+					{% set prixtotal = qte * prixunitaire  %}
+					{% set prixtotaleuro = prixtotal / 655.955  %}
+					{% if qte == 0 %}
+					{% else %}
+						<tr>
+							<td align="center" class="ligne" >
+								{{ detailcommande.article.libellefr }}
+							</td>
+							<td align="center" class="ligne">{{ detailcommande.quantite }}</td>
+							<td align="center" class="ligne">{{ detailcommande.prixunitaire|number_format(0, '.', ' ') }}</td>
+							<td align="center" class="ligne">{{ prixtotal|number_format(0, '.', ' ')  }}</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+				</tbody>
+			</tbody>
+			<tfoot>
+				<tr >
+					<td colspan="2" style="border-bottom: none;"></td>
+					<td align="center" colspan="2" class="total">TOTAL NET : 
+
+					{% set soustotal = 0 %}
+
+					{% for detailcommande in boncommandes.detailcommandes %}
+						{% set prixunitaire = detailcommande.prixunitaire %}
+						{% set qte = detailcommande.quantite %}
+
+						{% set prixtotal = qte * prixunitaire  %}
+						{% set soustotal = prixtotal + soustotal ?? 0   %}
+						{% if loop.last %}
+
+
+							{% set var = (soustotal - boncommandes.montantremise) + boncommandes.tva  %}
+								{{ var|number_format(0, '.', ' ') }}
+							</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+			</tfoot >
+		</table><br>
+		<table width="90%">
+			<tr>
+			<td>
+			{% set soustotal = 0 %}{% set a = 0 %}
+				{% for detailcommande in boncommandes.detailcommandes %}
+					{% set prixunitaire = detailcommande.prixunitaire %}{% set qte = detailcommande.quantite %}{% set prixtotal = qte * prixunitaire  %}{% set soustotal = prixtotal + soustotal ?? 0   %}
+					{% if loop.last %}
+						<span>
+							Arr&ecirc;t&eacute; la pr&eacute;sente facture &agrave; la somme de :<br>{% set a = (soustotal - boncommandes.montantremise) + boncommandes.tva %}
+							<b style="text-transform: capitalize;">{{  a|format_number(style='spellout') }} CFA</b>
+							
+						</span>
+					{% endif %}
+				{% endfor %}
+			</td>
+			</tr>
+			<tr align="right">
+				<td class="direction">
+					LA DIRECTION
+				</td>
+			</tr>
+		</table>
+		<footer>
+				{% if footer == 'true' %}
+				<img src="{{ base64(absolute_url(asset('uploads/brochures/footer.png' ))) }}" style="img { border: 1px solid #ddd; border-radius: 4px;  margin: -40px 0 0 -20px ;  width:750px; }" alt="logo">
+				{% elseif footer == 'false'  %}
+					
+				{% endif %}
+  		</footer>
+	</body>
+
+</html>
+

@@ -1,0 +1,167 @@
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #fdfdfd;
+    }
+
+    @media print {
+
+      @page {
+    margin: 100px 40px 100px 40px;
+  }
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background: white;
+        margin-top: 0;
+        font-size: 8px;
+        border: none;
+        padding: 10px;
+      }
+
+      .content {
+        padding-top: 120px;  /* espace sous le header */
+        padding-bottom: 60px; /* espace au-dessus du footer */
+      }
+
+      /* Empêche les sauts de page à l'intérieur des éléments importants */
+      table, tr, td, th {
+        page-break-inside: avoid;
+      }
+    }
+
+   
+
+    .facture-number {
+      background-color: #e9e7e7;
+      display: inline-block;
+      padding: 5px;
+      font-weight: bold;
+      font-size: 14px;
+      border: none;
+      width: 300px;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
+    .subject {
+      background-color:rgb(0, 0, 0);
+      color: white;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 14px;
+      border: none;
+      margin-right: 35px;
+      width: 400px;
+      height: 40px;      
+    }
+
+    .abidjan-date {
+      font-weight: normal;
+      margin-bottom: 5px;
+      font-size: 12px;
+      border: none;
+    }
+
+    .client-info {
+      border: 1px solid #333;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .table {
+      border: none;
+      font-size: 8px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .table tbody tr td {
+      color: blue;
+      padding: 0;
+      border: none;
+      line-height: 1.2;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+    }
+
+    th, td {
+      border: 1px solid #aaa;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .total {
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 2px solid #0066cc;
+      margin: 0;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+
+    
+</style>
+
+<body>
+  <!-- Header (déjà présent dans votre code) -->
+  <div class="header" style="margin: -50px 0 30px 0; border-bottom: 2px solid #0066cc; padding-bottom: 0;">
+    <div style="position:absolute;">
+       <img src="{{ logo }}" alt="Logo" width="150px" height="110px">
+    </div>
+    <div style="padding:15px 0 0 175px;">
+       <table class="table">
+      <tbody>
+        <tr>
+          <td>PESAGE INDUSTRIELLLLLLLLLLLLLLLLLLLLLL</td>
+          <td>PLOMBERIE</td>
+        </tr>
+        <tr>
+          <td>SECURITE ELECTRONIQUE</td>
+          <td>FROID INDUSTRIEL</td>
+        </tr>
+        <tr>
+          <td>ELECTRONIQUE INDUSTRIEL</td>
+          <td>VENTE DE MATERIEL INFORMATIQUE ET ELECTRONIQUE</td>
+        </tr>
+        <tr>
+          <td>INFORAMTIQUE GENERAL ET INDUSTRIEL</td>
+          <td>COMMERCE GENERAL</td>
+        </tr>
+        <tr>
+          <td>ELECTRICITE BATIMENT ET INDUSTRIEL</td>
+          <td>DIVERSES PRESTATIONS DE SERVICES</td>
+        </tr>
+        <tr>
+          <td colspan="2">GENIE CIVIL</td>
+        </tr>
+       </tbody>
+      </table>
+    </div>
+  </div>
+</body>  

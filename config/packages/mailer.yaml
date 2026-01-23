@@ -1,0 +1,9 @@
+# config/packages/mailer.yaml
+framework:
+    mailer:
+        transports:
+            # Définir un transport avec une DSN string (pas un array)
+            mailtrap: 'smtp://1f16648ea536bf:1600b9ce508a10@sandbox.smtp.mailtrap.io:2525?encryption=tls&auth_mode=login'
+        
+        # Définir le transport par défaut
+        # dsn: 'mailtrap://default'

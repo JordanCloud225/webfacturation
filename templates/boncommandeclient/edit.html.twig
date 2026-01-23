@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Bon Commande Fournisseur{% endblock %}
+
+{% block body %}
+<div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <h1>Modification Bon Commande Fournisseur</h1>
+        </div>
+    </div>
+
+    {{ include('boncommandefour/_form.html.twig', {'button_label': 'Update'}) }}
+
+ </div>
+{% endblock %}

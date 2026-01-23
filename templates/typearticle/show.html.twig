@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Typearticle{% endblock %}
+
+{% block body %}
+    <h1>Typearticle</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ typearticle.id }}</td>
+            </tr>
+            <tr>
+                <th>Libellefr</th>
+                <td>{{ typearticle.libellefr }}</td>
+            </tr>
+            <tr>
+                <th>Libelleen</th>
+                <td>{{ typearticle.libelleen }}</td>
+            </tr>
+            <tr>
+                <th>Identreprise</th>
+                <td>{{ typearticle.identreprise }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ typearticle.createdAt ? typearticle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ typearticle.updatedAt ? typearticle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ typearticle.deletedAt ? typearticle.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ typearticle.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ typearticle.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>DeletedBy</th>
+                <td>{{ typearticle.deletedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_typearticle_index') }}">back to list</a>
+
+    <a href="{{ path('app_typearticle_edit', {'id': typearticle.id}) }}">edit</a>
+
+    {{ include('typearticle/_delete_form.html.twig') }}
+{% endblock %}

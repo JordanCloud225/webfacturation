@@ -1,0 +1,201 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bon de commandes Liste{% endblock %}
+
+{% block body %}
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+
+                    <div class="text-black">
+                        {{ message }}
+                    </div>
+
+            </div>			
+            {# {{ form_start(form, {'attr': {'target': '_blank'}}) }} #}
+
+        {% endfor %}
+    {% endfor %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form method="post" action="{{ path('app_boncommande_delete') }}" id="form-delete">
+						<div class="modal-body container">
+
+							<div class="form-group col-md-12 col-sm-12">
+								<input type="hidden" class="form-control p-3" id="id-delete" name="id-delete" placeholder="id commune">
+							</div>
+							<div class="modal-body">
+								<h2 class="fs-5">Voulez-vous effectuer cette suppression ?</h2>
+
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="reset" class="btn btn-success" data-bs-dismiss="modal">Non</button>
+							<button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Oui</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+    <h1>Liste Bons de commandes </h1>
+ <p class="mb-2"><a href="{{ path('app_boncommande_new') }}"><button class="btn btn-info"><i class="fa fa-list"></i> Nouveau</button></a> 
+  <a href="{{ path('app_boncommande_index2') }}"><button class="btn btn-success"><i class="fa fa-list"></i> Demandes d'achat</button></a>
+   <a href="{{ path('app_boncommande_proforma') }}"><button class="btn btn-success"><i class="fa fa-list"></i> Factures Proformas</button></a>
+   <a href="{{ path('app_reglement_index') }}"><button class="btn btn-danger"><i class="fa fa-list"></i> Reglement Factures</button></a>
+  </p>
+    <table id="example-table" class="table table-sm table-bordered table-striped table-hover display" style="width:100%">
+        <thead class="bg-primary text-white text-bold">
+            <tr>
+                 <th>Date Edition</th>
+                 <th>Client</th>
+                <th>Code bon commande</th>
+                <th>Po</th>
+                <th>Objet</th>
+                <th>Location Site</th>
+                <th>Taux remise</th>
+                <th>Tva</th>
+                <th>Sous-total</th>
+                <th>Ttc</th>
+                <th data-formater="">Action</th>
+            </tr>
+        </thead>
+ 
+    </table>
+
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+<script type="text/javascript">
+
+    function deleteRow(value, libelle){
+
+        $('#id-delete').val(value)
+    }
+
+      function printRow(value){
+
+    Swal.fire({
+        title: 'Options d\'impression',
+        html:
+            '<div class="mb-3">' +
+            '   <label for="swal-header" class="form-label">Inclure un en-tête ?</label>' +
+            '   <select id="swal-header" class="form-select">' +
+            '       <option value="true">Oui</option>' +
+            '       <option value="false">Non</option>' +
+            '   </select>' +
+            '</div>' +
+            '<div>' +
+            '   <label for="swal-footer" class="form-label">Inclure un pied de page ?</label>' +
+            '   <select id="swal-footer" class="form-select">' +
+            '       <option value="true">Oui</option>' +
+            '       <option value="false">Non</option>' +
+            '   </select>' +
+            '</div>',
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Imprimer',
+        cancelButtonText: 'Annuler',
+        preConfirm: () => {
+            return {
+                header: document.getElementById('swal-header').value === 'true',
+                footer: document.getElementById('swal-footer').value === 'true'
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Construire l'URL avec les paramètres
+            //var url = window.location.origin + "/boncommande/" + value + "/printbon?" + 
+            //          "header=" + result.value.header + "&footer=" + result.value.footer;
+            //Autre possibilité d'écriture
+            const url = `${window.location.origin}/boncommande/${value}/printbon?header=${result.value.header}&footer=${result.value.footer}`;
+            // Rediriger vers l'URL
+            window.open(url, '_blank');
+        }
+    });
+
+	    }
+
+    function iniTable(){
+        $('#example-table').DataTable({
+            select: true,
+            ordering: true,
+            responsive: true,
+            paging: true,
+            processing: true,
+            serverSide: true,
+            searching: true,
+            ajax: {
+                url: '{{ path("boncommande_lister") }}',
+                type: 'GET',
+
+            },
+            columns: [
+                { data: 'datecommande' }, 
+                 { data: 'client.libelle' },
+                { data: 'codecommande' },
+                { data: 'po' },
+                { data: 'jobtitle' },
+                { data: 'sitelocation' },
+                { data: 'tauxremise' },
+                { data: 'tva' },
+                { data: 'soustotal' },
+                { data: 'ttc' }
+                          
+                // { data: 'salary' },
+                // { data: 'office' }
+            ],
+            columnDefs: [
+                {
+                    targets: 10,
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+		                        return '<button class="btn btn-danger" onClick="javascript:deleteRow('+ data + ')" title="Supprimer" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-trash"></i></button>\n\
+                        	                <button class="btn btn-primary" onClick="javascript:printRow('+ data + ')" title="Imprimer" data-bs-target="#" ><i class="fa fa-print"></i></button>';
+
+		                    }
+                }
+            ],
+            layout: {
+                topStart: {
+                    pageLength: {
+                        menu: [5, 10, 25, 50, 100]
+                    },
+                    buttons: {
+                        buttons:['copy','excel', 'pdf','colvis']
+                    }
+
+                }
+            },
+            language: {
+                url: '{{ asset("DataTables/fr-FR.json") }}',
+            }
+        });
+      
+
+        const alerts = document.querySelectorAll('[class*="alert-"]')
+        for (const alert of alerts) {
+            setTimeout( function() {
+                const bootstrapAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bootstrapAlert.close();
+            }, 3000);
+        }
+  
+    }
+
+        $(document).ready(function(){
+            iniTable()
+
+        });
+</script>
+{% endblock %}

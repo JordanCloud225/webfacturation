@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boncommande{% endblock %}
+
+{% block body %}
+    <h1>Boncommande</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ boncommande.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ boncommande.type }}</td>
+            </tr>
+            <tr>
+                <th>Po</th>
+                <td>{{ boncommande.po }}</td>
+            </tr>
+            <tr>
+                <th>Priunitaire</th>
+                <td>{{ boncommande.priunitaire }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ boncommande.quantite }}</td>
+            </tr>
+            <tr>
+                <th>Prixunitaire</th>
+                <td>{{ boncommande.prixunitaire }}</td>
+            </tr>
+            <tr>
+                <th>Tauxremise</th>
+                <td>{{ boncommande.tauxremise }}</td>
+            </tr>
+            <tr>
+                <th>Tva</th>
+                <td>{{ boncommande.tva }}</td>
+            </tr>
+            <tr>
+                <th>Soustotal</th>
+                <td>{{ boncommande.soustotal }}</td>
+            </tr>
+            <tr>
+                <th>Ttc</th>
+                <td>{{ boncommande.ttc }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ boncommande.etat ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Identreprise</th>
+                <td>{{ boncommande.identreprise }}</td>
+            </tr>
+            <tr>
+                <th>Deatebon</th>
+                <td>{{ boncommande.datedevis ? boncommande.datedevis|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ boncommande.createdAt ? boncommande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ boncommande.updatedAt ? boncommande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ boncommande.deletedAt ? boncommande.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ boncommande.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ boncommande.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>DeletedBy</th>
+                <td>{{ boncommande.deletedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_boncommande_index') }}">back to list</a>
+
+    <a href="{{ path('app_boncommande_edit', {'id': boncommande.id}) }}">edit</a>
+
+    {{ include('boncommande/_delete_form.html.twig') }}
+{% endblock %}

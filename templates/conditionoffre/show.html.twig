@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conditionoffre{% endblock %}
+
+{% block body %}
+    <h1>Conditionoffre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ conditionoffre.id }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ conditionoffre.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Valeurlibelle</th>
+                <td>{{ conditionoffre.valeurlibelle }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_conditionoffre_index') }}">back to list</a>
+
+    <a href="{{ path('app_conditionoffre_edit', {'id': conditionoffre.id}) }}">edit</a>
+
+    {{ include('conditionoffre/_delete_form.html.twig') }}
+{% endblock %}

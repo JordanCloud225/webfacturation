@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reglement facture
+{% endblock %}
+
+{% block body %}
+	<div class="ibox">
+		<div class="ibox-head">
+			<div class="ibox-title">
+				<h2>Reglement facture</h2>
+			</div>
+		</div>
+
+
+		{{ include('reglement/_form.html.twig', {'button_label': 'Valider'}) }}
+
+	</div>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+
+	 <script>
+
+function compareNumbers() {
+
+  let valeur = Number(document.getElementById("reglement_montantverse").value);
+  let reste = Number(document.getElementById("reglement_reste").value);
+  if (Number(valeur) > Number(reste)) {
+     alert('La valeur entrée est superieure au reste');
+	   document.getElementById('reglement_montantverse').value = '';
+  } else {
+    
+  }
+
+}
+</script>
+
+
+{% endblock %}

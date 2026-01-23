@@ -1,0 +1,168 @@
+ <meta charset="UTF-8">
+  <title>Facture Proforma</title>
+
+  {% block stylesheets %}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #fdfdfd;
+    }
+
+    @media print {
+
+     
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+
+   
+
+      /* Empêche les sauts de page à l'intérieur des éléments importants */
+      table, tr, td, th {
+        page-break-inside: avoid;
+      }
+    }
+
+   
+
+    .facture-number {
+      background-color: #e9e7e7;
+      display: inline-block;
+      padding: 5px;
+      font-weight: bold;
+      font-size: 14px;
+      border: none;
+      width: 300px;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
+    .subject {
+      background-color: rgb(0, 0, 0);
+      color: white;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 14px;
+      border: none;
+      margin: 20px 35px 0 0;
+      width: 400px;
+      height: 70px;
+    }
+    .abidjan-date {
+      font-weight: normal;
+      margin-bottom: 15px;
+      font-size: 12px;
+      border: none;
+    }
+
+    .client-info {
+      border: 1px solid #333;
+      font-weight: bold;
+      font-size: 12px;
+      padding: 20px 40px;
+    }
+    .table {
+      border: none;
+      font-size: 8px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .table tbody tr td {
+      color: blue;
+      padding: 0;
+      border: none;
+      line-height: 1.2;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+    }
+
+    th, td {
+      border: 1px solid #aaa;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .total {
+      font-weight: bold;
+      text-align: right;
+    }
+
+ 
+
+
+    
+</style>
+  {% endblock %}
+
+
+<body>
+ 
+  
+  <!-- Contenu principal (ajout de la div content) -->
+  <div class="content">
+    <table>
+       <tbody>
+         <tr>
+          <td class="facture-number">FACTURE PROFORMA N°{{ facture.numfacture }}</td>
+          <td class="abidjan-date">Abidjan, le {{ facture.datefacture|date('d') }} {{ facture.datefacture|format_date(pattern='MMMM', locale='fr')|capitalize }} {{ facture.datefacture|date('Y') }}</td>
+         </tr> 
+           <tr>
+            <td class="subject">OBJET : {{ boncommande.client.objet }}</td> 
+            <td class="client-info"><strong>CLIENT :{{ boncommande.client.libelle }}</strong></td>
+           </tr>
+       </tbody>
+    </table>
+
+    <table>
+      <thead>
+          <tr>
+              <th>DESIGNATION</th>
+              <th>QTE</th>
+              <th>P. UNITAIRE</th> 
+              <th>P. TOTAL</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% set total = 0 %}
+          {% for detailcommande in detailcommandes %}
+          {% set soustotal = detailcommande.quantite * detailcommande.article.prixunitaire %}
+          <tr>
+              <td>{{ detailcommande.article.libellefr }}</td>
+              <td>{{ detailcommande.quantite }}</td>
+              <td>{{ detailcommande.article.prixunitaire|number_format(0, ',', ' ') }}</td>
+              <td>{{ soustotal|number_format(0, ',', ' ') }}</td>
+          </tr>
+          {% set total = total + soustotal %}
+          {% endfor %}
+      </tbody>
+      <tfoot>
+          <tr>
+              <td colspan="3" class="total">TOTAL </td>
+              <td> <b>{{ total|number_format(0, ',', ' ') }}</b></td>
+          </tr>
+      </tfoot>
+    </table>
+
+    <p>
+        Arrêtée la présente facture à la somme de :</p>
+        <p class="amount-text">
+       <b> <em>{{ montantLettre }} francs CFA</em> </b>
+    </p>
+
+
+
+    
+
+  </div> <!-- Fin de la div content -->
+
+</body>

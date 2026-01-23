@@ -1,0 +1,112 @@
+  <div class="ibox-body">
+{{ form_start(form) }}
+
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+
+                    <div class="text-black">
+                        {{ message }}
+                    </div>
+
+            </div> 
+
+        {% endfor %}
+    {% endfor %}
+  
+    <div class="row">
+      <div class="form-group col-sm-4">
+          <label class="text-size" id="libelle">Client * </label>
+              {{ form_widget(form.libelle, {'attr':{'class':'form-control input','placeholder':'Nom client'}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="pays">Pays * </label>
+              {{ form_widget(form.pays, {'attr':{'class':'form-control input'}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="ville">Ville * </label>
+              {{ form_widget(form.ville, {'attr':{'class':'form-control input','placeholder':'Ville du client'}}) }}
+          <br>
+      </div> 
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="siren">Banque </label>
+              {{ form_widget(form.siren, {'attr':{'class':'form-control input','placeholder':'Banque du client'}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="codenaf">RCCM</label>
+              {{ form_widget(form.codenaf, {'attr':{'class':'form-control input','placeholder':'RCCM'}}) }}
+          <br>
+      </div>
+        <div class="form-group col-sm-4">
+          <label class="text-size" id="numtv">N° TVA </label>
+              {{ form_widget(form.numtv, {'attr':{'class':'form-control input'}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="adresse">Adresse </label>
+              {{ form_widget(form.adresse, {'attr':{'class':'form-control input'}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="complementadresse">Complement d'adresse </label>
+              {{ form_widget(form.complementadresse, {'attr':{'class':'form-control input','placeholder':'Complement adresse '}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="sigle">Sigle </label>
+              {{ form_widget(form.sigle, {'attr':{'class':'form-control input','placeholder':'Abreviation du nom client'}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="langue">Langue </label>
+              {{ form_widget(form.langue, {'attr':{'class':'form-control input'}}) }}
+          <br>
+      </div>
+
+              <div class="form-group col-sm-4">
+          <label class="text-size" id="contact1">Contact 1</label>
+              {{ form_widget(form.contact1, {'attr':{'class':'form-control input'}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="contact2">Contact 2 </label>
+              {{ form_widget(form.contact2, {'attr':{'class':'form-control input'}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="email">Email </label>
+              {{ form_widget(form.email, {'attr':{'class':'form-control input','placeholder':'Mail du client '}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="codepostal">Code postal </label>
+              {{ form_widget(form.codepostal, {'attr':{'class':'form-control input','placeholder':'Code postal'}}) }}
+          <br>
+      </div>
+           <div class="form-group col-sm-4">
+          <label class="text-size" id="sitweb">Site Web </label>
+              {{ form_widget(form.sitweb, {'attr':{'class':'form-control input','placeholder':'Site Internet'}}) }}
+          <br>
+      </div>
+         <div class="form-group col-sm-4">
+          <label class="text-size" id="brochure">Logo </label>
+              {{ form_widget(form.brochure, {'attr':{'class':'form-control input','placeholder':'Logo du client'}}) }}
+          <br>
+      </div>
+      </div>
+
+ 
+      <div class="row"> 
+          <div class="col-md-2">
+      {{ form_row(form.save, {'label':'Enregistrer ','attr':{'value':'save', 'class':'btn bt-md btn-success fa fa-save'}}) }}</div>
+           <div class="col-md-2">
+      {{ form_row(form.saveAndAdd, {'label':'Enregistrer ++ ','attr':{'value':'saveAndAdd', 'class':'btn btn-success fa fa-save '}}) }}</div>
+          <div class="col-md-2">
+          <a href="{{ path('app_client_index') }}" class="btn btn-primary fa fa-list">Afficher la liste</a> </div>
+
+      </div>
+{{ form_end(form) }}
+   </div>

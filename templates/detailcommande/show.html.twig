@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detailcommande{% endblock %}
+
+{% block body %}
+    <h1>Detailcommande</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ detailcommande.id }}</td>
+            </tr>
+            <tr>
+                <th>Datedetail</th>
+                <td>{{ detailcommande.datedetail ? detailcommande.datedetail|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Soustotal</th>
+                <td>{{ detailcommande.soustotal }}</td>
+            </tr>
+            <tr>
+                <th>Prixunitaire</th>
+                <td>{{ detailcommande.prixunitaire }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ detailcommande.quantite }}</td>
+            </tr>
+            <tr>
+                <th>Identreprise</th>
+                <td>{{ detailcommande.identreprise }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ detailcommande.createdAt ? detailcommande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ detailcommande.updatedAt ? detailcommande.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ detailcommande.deletedAt ? detailcommande.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ detailcommande.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ detailcommande.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>DeletedBy</th>
+                <td>{{ detailcommande.deletedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_detailcommande_index') }}">back to list</a>
+
+    <a href="{{ path('app_detailcommande_edit', {'id': detailcommande.id}) }}">edit</a>
+
+    {{ include('detailcommande/_delete_form.html.twig') }}
+{% endblock %}
